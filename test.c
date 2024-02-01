@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 01:43:00 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/01 01:43:02 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/01 14:52:50 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	main(void)
 	mlx_ptr = mlx_init();
 	if (!mlx_ptr)
 		ft_printf("mlx_init fail\n");
-	win_ptr = mlx_new_window(mlx_ptr, 500, 500, "title");
+	win_ptr = mlx_new_window(mlx_ptr, 500, 500, "FdF by ecorona-");
 	if (!win_ptr)
 		ft_printf("mlx_new_window fail\n");
 	window.mlx_ptr = mlx_ptr;
