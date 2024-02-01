@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/01 18:19:02 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:33:20 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	animate(void *param)
 	cube = ((struct s_object *)param)->cube;
 	window = ((struct s_object *)param)->window;
 	mlx_clear_window(window->mlx_ptr, window->win_ptr);
-	rotate_cube(cube, .001, 2);
+	rotate_cube(cube, .0001, 2);
 	translate_cube(cube, 3, 250);
 	translate_cube(cube, 2, 250);
 	draw_cube(cube, (void *) window);
