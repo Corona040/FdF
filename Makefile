@@ -1,6 +1,6 @@
 NAME = fdf
 
-SRCS = test.c
+SRCS = draw.c linalg.c
 
 OBJS = $(SRCS:.c=.o)
 
