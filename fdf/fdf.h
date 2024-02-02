@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/01 17:33:27 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/02 02:58:46 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,46 @@ typedef struct s_vector
 	float_t z;
 }	t_vector;
 
+typedef struct s_quaternion
+{
+	float_t	w;
+	float_t	i;
+	float_t	j;
+	float_t	k;
+}	t_quaternion;
+
+typedef struct s_object
+{
+	int				size;
+	t_vector		origin;
+	t_vector		**obj;
+	struct window	*window;
+}	t_object;
+
 /* ************************************************************************** */
 // linalg.c
+t_vector	*v_sum(t_vector *u, t_vector *v, int inplace);
 t_vector	*v_assign(t_vector *u, t_vector v, int inplace);
-float_t	distance(t_vector *u, t_vector *v);
-float_t	dot_product(t_vector *u, t_vector *v);
-t_vector	*scalar_product(float_t a, t_vector *u, int inplace);
-t_vector	*vector_product(t_vector *u, t_vector *v);
-float_t	v_module(t_vector *u);
+float_t		v_distance(t_vector *u, t_vector *v);
+float_t		v_dot_product(t_vector *u, t_vector *v);
+t_vector	*v_norm(t_vector *u, int inplace);
+t_vector	*v_scalar_product(float_t a, t_vector *u, int inplace);
+t_vector	*v_vector_product(t_vector *u, t_vector *v);
+float_t		v_module(t_vector *u);
 t_vector	*v_proj(t_vector *a, t_vector *b, int inplace);
-t_vector	*v_rotate(t_vector *u, float_t a, int axis, int inplace);
-t_vector	*v_planeproj(t_vector *u, int axis, int inplace);
+t_vector	*v_planeproj(t_vector *u, t_vector axis, int inplace);
+t_vector	*v_rotate(t_vector *u, t_vector axis, float_t a, int inplace);
+t_vector	*v_translate(t_vector *u, t_vector axis, float_t val, int inplace);
+/* ************************************************************************** */
+// quaternion.c
+float_t			q_modules(t_quaternion *q);
+t_quaternion	*q_conjugate(t_quaternion *q, int inplace);
+t_quaternion	*q_scalar_product(float_t a, t_quaternion *q, int inplace);
+t_quaternion	*q_inverse(t_quaternion *q, int inplace);
+t_quaternion	*q_product(t_quaternion *q, t_quaternion *p, int inplace);
+/* ************************************************************************** */
+// draw.c
+void	draw_point(t_vector *p, struct window *window);
+void	connect_vertices(t_vector *vertice1, t_vector *vertice2, struct window *window);
 
 #endif
