@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/02 02:58:46 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:36:20 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_object
 {
 	int				size;
 	t_vector		origin;
+	t_vector		speed;
 	t_vector		**obj;
 	struct window	*window;
 }	t_object;

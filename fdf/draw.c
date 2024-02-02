@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/02 03:57:35 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:46:31 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,22 @@
 
 void	draw_point(t_vector *p, struct window *window)
 {
-	t_vector			*coords;
-	// float_t				z_warp;
-	// int					pixel;
-	// unsigned char		color;
+	t_vector	*coords;
+	float_t		z_warp;
+	int			pixel;
+	int 		r;
+	int			g;
+	int			b;
 
-	// z_warp = (p->z + 126) / 256;
-	// color = 0xff * z_warp;
-	// pixel = 0xffaaaa00 | color;
+	z_warp = (p->z + ((float_t) 434/2)) / (500 + 434);
+	r = 0xff * z_warp;
+	g = 0x00;
+	b = (0xff-(0xff * z_warp))/4;
+	pixel = (0x00000000 | (r << (2 * 8)) | (g << (1 * 8)) | b);
 	coords = v_planeproj(p, (t_vector){0, 0, 1}, 0);
 	(void) window;
 	mlx_pixel_put(window->mlx_ptr, window->win_ptr, \
-		(int) coords->x, (int) coords->y, 0xffffffff);
+		(int) coords->x, (int) coords->y, pixel);
 	free(coords);
 }
 
@@ -77,11 +81,11 @@ t_vector	*cheat_warp(t_vector *u)
 	float_t		x_factor;
 	float_t		y_factor;
 
-	z_warp = (u->z + 125) / 250;
-	x_factor = (u->x - 375) / 250;
-	y_factor = (u->y - 375) / 250;
-	u->x += 50 * x_factor * z_warp;
-	u->y += 50 * y_factor * z_warp;
+	z_warp = (u->z + ((float_t)434 / 2)) / (500 + ((float_t)434 / 2));
+	x_factor = (u->x - (125 + 375)) / 250;
+	y_factor = (u->y - (125 + 375)) / 250;
+	u->x += 100 * x_factor * z_warp;
+	u->y += 100 * y_factor * z_warp;
 	return (u);
 }
 
@@ -158,8 +162,16 @@ int	animate(void *param)
 	cube_obj = (t_object *)param;
 	window = ((struct s_object *)param)->window;
 	mlx_clear_window(window->mlx_ptr, window->win_ptr);
-	rotate_obj(cube_obj, (t_vector){1, 1, 1}, .0001);
-	// translate_obj(cube_obj, (t_vector){0,0,1}, .01);
+	rotate_obj(cube_obj, (t_vector){1, 1, 0}, .001);
+	if (cube_obj->origin.x >= 500 || cube_obj->origin.x <= 250)
+		cube_obj->speed.x = -cube_obj->speed.x;
+	if (cube_obj->origin.y >= 500 || cube_obj->origin.y <= 250)
+		cube_obj->speed.y = -cube_obj->speed.y;
+	if (cube_obj->origin.z >= 500 || cube_obj->origin.z <= 0)
+		cube_obj->speed.z = -cube_obj->speed.z;
+	translate_obj(cube_obj, (t_vector){1,0,0}, cube_obj->speed.x);
+	translate_obj(cube_obj, (t_vector){0,1,0}, cube_obj->speed.y);
+	translate_obj(cube_obj, (t_vector){0,0,1}, cube_obj->speed.z);
 	draw_cube((t_object *)param, (void *)window);
 	return (0);
 }
@@ -173,10 +185,10 @@ int	main(void)
 	t_object	cube_object;
 
 	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 500, 500, "test");
+	win_ptr = mlx_new_window(mlx_ptr, 750, 750, "test");
 	cube = create_cube((t_vector) {-125, -125, -125}, 250);
 	window = (struct window){mlx_ptr, win_ptr};
-	cube_object = (t_object){8, (t_vector){250, 250, 0}, cube, &window};
+	cube_object = (t_object){8, (t_vector){375, 375, 250}, (t_vector){0.03, 0.05, 0.05}, cube, &window};
 	draw_cube(&cube_object, (void *) &window);
 	mlx_loop_hook(mlx_ptr, animate, (void *) &cube_object);
 	mlx_loop(mlx_ptr);

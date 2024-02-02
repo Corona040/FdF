@@ -1,0 +1,8 @@
+1	Test fdf without parameters, with too many parameters, a non-existing
+file or on which you have no rights.
+
+2 
+Esc and X (no leaks)
+
+5
+Use mlx images
