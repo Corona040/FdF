@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/03 18:09:45 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/03 19:23:16 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,12 +158,12 @@ int	animate(void *param)
 {
 	struct window	*window;
 	t_object		*cube_obj;
-	t_img			*img;
+	// t_img			*img;
 
 	cube_obj = (t_object *)param;
 	window = ((struct s_object *)param)->window;
 	mlx_clear_window(window->mlx_ptr, window->win_ptr);
-	rotate_obj(cube_obj, (t_vector){1, 1, 0}, .001);
+	rotate_obj(cube_obj, (t_vector){0, 0, 1}, .02);
 	if (cube_obj->origin.x >= 500 || cube_obj->origin.x <= 250)
 		cube_obj->speed.x = -cube_obj->speed.x;
 	if (cube_obj->origin.y >= 500 || cube_obj->origin.y <= 250)
@@ -189,7 +189,7 @@ int	main(void)
 	win_ptr = mlx_new_window(mlx_ptr, 750, 750, "test");
 	cube = create_cube((t_vector) {-125, -125, -125}, 250);
 	window = (struct window){mlx_ptr, win_ptr};
-	cube_object = (t_object){8, (t_vector){375, 375, 500}, (t_vector){0.03, -0.02, 0.01}, cube, &window};
+	cube_object = (t_object){8, (t_vector){375, 375, 500}, (t_vector){0.1, -0.02, 0.01}, cube, &window};
 	draw_cube(&cube_object, (void *) &window);
 	mlx_loop_hook(mlx_ptr, animate, (void *) &cube_object);
 	mlx_loop(mlx_ptr);
