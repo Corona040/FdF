@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/02 14:36:20 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/03 18:09:36 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,22 @@ typedef struct s_quaternion
 	float_t	j;
 	float_t	k;
 }	t_quaternion;
+
+typedef struct s_image_conf
+{
+	int		bpp;
+	int		len;
+	int		end;
+}	t_img_conf;
+
+typedef struct s_image
+{
+	void		*img_ptr;
+	char		*data;
+	int			width;
+	int			height;
+	t_img_conf	conf;
+}	t_img;
 
 typedef struct s_object
 {

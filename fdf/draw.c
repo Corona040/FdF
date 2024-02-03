@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/03 10:50:05 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/03 18:09:45 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,7 @@ int	animate(void *param)
 {
 	struct window	*window;
 	t_object		*cube_obj;
+	t_img			*img;
 
 	cube_obj = (t_object *)param;
 	window = ((struct s_object *)param)->window;
