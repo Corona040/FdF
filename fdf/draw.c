@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/02 14:46:31 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/03 10:50:05 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	draw_point(t_vector *p, struct window *window)
 	int			g;
 	int			b;
 
-	z_warp = (p->z + ((float_t) 434/2)) / (500 + 434);
+	z_warp = (p->z + ((float_t) 434/2)) / (1000 + 434);
 	r = 0xff * z_warp;
-	g = 0x00;
-	b = (0xff-(0xff * z_warp))/4;
+	g = 0x77 - (0x11 * z_warp)/2;
+	b = 0x77 - (0x11 * z_warp)/2;
 	pixel = (0x00000000 | (r << (2 * 8)) | (g << (1 * 8)) | b);
 	coords = v_planeproj(p, (t_vector){0, 0, 1}, 0);
 	(void) window;
@@ -81,11 +81,11 @@ t_vector	*cheat_warp(t_vector *u)
 	float_t		x_factor;
 	float_t		y_factor;
 
-	z_warp = (u->z + ((float_t)434 / 2)) / (500 + ((float_t)434 / 2));
+	z_warp = (u->z + ((float_t)434 / 2)) / (1000 + ((float_t)434 / 2));
 	x_factor = (u->x - (125 + 375)) / 250;
 	y_factor = (u->y - (125 + 375)) / 250;
-	u->x += 100 * x_factor * z_warp;
-	u->y += 100 * y_factor * z_warp;
+	u->x += 200 * x_factor * z_warp;
+	u->y += 200 * y_factor * z_warp;
 	return (u);
 }
 
@@ -167,7 +167,7 @@ int	animate(void *param)
 		cube_obj->speed.x = -cube_obj->speed.x;
 	if (cube_obj->origin.y >= 500 || cube_obj->origin.y <= 250)
 		cube_obj->speed.y = -cube_obj->speed.y;
-	if (cube_obj->origin.z >= 500 || cube_obj->origin.z <= 0)
+	if (cube_obj->origin.z >= 1000 || cube_obj->origin.z <= 0)
 		cube_obj->speed.z = -cube_obj->speed.z;
 	translate_obj(cube_obj, (t_vector){1,0,0}, cube_obj->speed.x);
 	translate_obj(cube_obj, (t_vector){0,1,0}, cube_obj->speed.y);
@@ -188,7 +188,7 @@ int	main(void)
 	win_ptr = mlx_new_window(mlx_ptr, 750, 750, "test");
 	cube = create_cube((t_vector) {-125, -125, -125}, 250);
 	window = (struct window){mlx_ptr, win_ptr};
-	cube_object = (t_object){8, (t_vector){375, 375, 250}, (t_vector){0.03, 0.05, 0.05}, cube, &window};
+	cube_object = (t_object){8, (t_vector){375, 375, 500}, (t_vector){0.03, -0.02, 0.01}, cube, &window};
 	draw_cube(&cube_object, (void *) &window);
 	mlx_loop_hook(mlx_ptr, animate, (void *) &cube_object);
 	mlx_loop(mlx_ptr);
