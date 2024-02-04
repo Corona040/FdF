@@ -6,11 +6,23 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/04 04:06:27 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/04 14:09:23 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+#define WIN_X 1000
+#define WIN_Y 1000
+#define GRID_STEP 100
+#define IMG_X 1000
+#define IMG_Y 1000
+#define CAM_POS 500
+#define FOV 100
+#define ZOOM_FACTOR 25
+#define MOVE_FACTOR	1
+#define ROT_FACTOR .01
+#define ZOOM 15
 
 void	draw_point(t_vector *p, t_img *img)
 {
@@ -87,15 +99,15 @@ void	scene_draw(t_scene *scene)
 		while (j < obj->height)
 		{
 			node2 = v_sum(&obj->grid[i][j], &cam->origin, 0);
-			node2->x = node2->x * (cam->dist / node2->z);
-			node2->y = node2->y * (cam->dist / node2->z);
+			node2->x = node2->x * (cam->dist / node2->z) * ZOOM;
+			node2->y = node2->y * (cam->dist / node2->z) * ZOOM;
 			v_sum(node2, &obj->origin, 1);
 			// MORE ALLOCS MORE POINTS OF FAILURE
 			if (i > 0)
 			{
 				node1 = v_sum(&obj->grid[i - 1][j], &cam->origin, 0);
-				node1->x = node1->x * (cam->dist / node1->z);
-				node1->y = node1->y * (cam->dist / node1->z);
+				node1->x = node1->x * (cam->dist / node1->z) * ZOOM;
+				node1->y = node1->y * (cam->dist / node1->z) * ZOOM;
 				if (node1->z > cam->dist && node2->z > cam->dist)
 				{
 					v_sum(node1, &obj->origin, 1);
@@ -106,8 +118,8 @@ void	scene_draw(t_scene *scene)
 			if (j > 0)
 			{
 				node1 = v_sum(&obj->grid[i][j - 1], &cam->origin, 0);
-				node1->x = node1->x * (cam->dist / node1->z);
-				node1->y = node1->y * (cam->dist / node1->z);
+				node1->x = node1->x * (cam->dist / node1->z) * ZOOM;
+				node1->y = node1->y * (cam->dist / node1->z) * ZOOM;
 				if (node1->z > cam->dist && node2->z > cam->dist)
 				{
 					v_sum(node1, &obj->origin, 1);
@@ -148,7 +160,6 @@ void	obj_translate(t_obj *obj, t_vector axis, float_t val)
 		v_shift(&(obj->origin), axis, val, 1);
 }
 
-#include <stdio.h>
 int	animate(void *param)
 {
 	t_scene		*scene;
@@ -161,15 +172,15 @@ int	animate(void *param)
 	(void)img;
 	scene = (t_scene *)param;
 	win = scene->obj->win;
-	img = create_img(win->mlx_ptr, 500, 500, NULL);
+	img = create_img(win->mlx_ptr, IMG_X, IMG_Y, NULL);
+	img->x = scene->obj->img->x;
+	img->y = scene->obj->img->y;
 	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);
 	scene->obj->img = img;
 	mlx_clear_window(win->mlx_ptr, win->win_ptr);
 	scene_draw(scene);
-	// img->x = 0;
-	// img->y = 0;
 	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, img->img_ptr, (int) img->x, (int) img->y);
-	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, img->img_ptr, 0, 0);
+	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, img->img_ptr, img->x, img->y);
 	return (0);
 }
 
@@ -185,17 +196,17 @@ int	scene_rot(void *param)
 	scene = (t_scene *)param;
 	img = scene->obj->img;
 	win = scene->obj->win;
-	img = create_img(win->mlx_ptr, 500, 500, NULL);
-	// img->origin = scene->obj->img->origin;
+	img = create_img(win->mlx_ptr, IMG_X, IMG_Y, NULL);
+	img->x = scene->obj->img->x;
+	img->y = scene->obj->img->y;
 	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);
 	scene->obj->img = img;
 	mlx_mouse_get_pos(win->mlx_ptr, win->win_ptr, &x, &y);
 	v = (t_vector){x, y, 0};
-	obj_rotate(scene->obj, (t_vector){-(y - scene->origin.y), x - scene->origin.x, 0}, -v_distance(&scene->origin, &v) / 100);
+	obj_rotate(scene->obj, (t_vector){-(y - scene->origin.y), x - scene->origin.x, 0}, -v_distance(&scene->origin, &v) * ROT_FACTOR);
 	scene->origin = v;
 	scene_draw(scene);
-	// mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, img->img_ptr, img->origin.x, img->origin.y);
-	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, img->img_ptr, 0, 0);
+	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, img->img_ptr, img->x, img->y);
 	return (0);
 }
 
@@ -211,18 +222,18 @@ int	scene_shift(void *param)
 	scene = (t_scene *)param;
 	img = scene->obj->img;
 	win = scene->obj->win;
-	img = create_img(win->mlx_ptr, 500, 500, NULL);
-	// img->origin = scene->obj->img->origin;
+	img = create_img(win->mlx_ptr, IMG_X, IMG_Y, NULL);
+	img->x = scene->obj->img->x;
+	img->y = scene->obj->img->y;
 	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);
 	scene->obj->img = img;
 	mlx_mouse_get_pos(win->mlx_ptr, win->win_ptr, &x, &y);
 	v = (t_vector){x, y, 0};
-	obj_translate(scene->obj, (t_vector){x - scene->origin.x, y - scene->origin.y, 0}, v_distance(&scene->origin, &v));
-	// v_shift(&img->origin, (t_vector){x - scene->origin.x, y - scene->origin.y, 0}, v_distance(&scene->origin, &v), 1);
+	img->x += (v.x - scene->origin.x) * MOVE_FACTOR;
+	img->y += (v.y - scene->origin.y) * MOVE_FACTOR;
 	scene->origin = v;
 	scene_draw(scene);
-	// mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, img->img_ptr, img->origin.x, img->origin.y);
-	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, img->img_ptr, 0, 0);
+	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, img->img_ptr, img->x, img->y);
 	return (0);
 }
 
@@ -244,9 +255,9 @@ int	mouse_press_hook(int button, int x, int y, void *param)
 		mlx_loop_hook(win->mlx_ptr, scene_shift, param);
 	}
 	else if (button == 4)
-		scene->cam->origin.z -= 10;
+		scene->cam->origin.z -= ZOOM_FACTOR;
 	else if (button == 5)
-		scene->cam->origin.z += 10;
+		scene->cam->origin.z += ZOOM_FACTOR;
 	return (0);
 }
 
@@ -297,12 +308,14 @@ int	main(void)
 	t_scene		scene;
 
 	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 500, 500, "FdF by ecorona-");
+	win_ptr = mlx_new_window(mlx_ptr, WIN_X, WIN_Y, "FdF by ecorona-");
 	win = (t_win){mlx_ptr, win_ptr};
-	grid = create_grid(2, 2, 50);
-	img = create_img(win.mlx_ptr, 500, 500, NULL);
-	obj = (t_obj){(t_vector){250, 250, 0}, 2, 2, grid, img, &win};
-	cam = (t_cam){(t_vector){0, 0, 200}, 100};
+	grid = create_grid(2, 2, GRID_STEP);
+	img = create_img(win.mlx_ptr, IMG_X, IMG_Y, NULL);
+	img->x = (float_t)(WIN_X - IMG_X) / 2;
+	img->y = (float_t)(WIN_Y - IMG_Y) / 2;
+	obj = (t_obj){(t_vector){(float_t)IMG_X / 2, (float_t)IMG_Y / 2, 0}, 2, 2, grid, img, &win};
+	cam = (t_cam){(t_vector){0, 0, CAM_POS}, FOV};
 	scene = (t_scene){&obj, &cam, (t_vector){0, 0, 0}};
 	mlx_do_key_autorepeatoff(mlx_ptr);
 	mlx_hook(win_ptr, DestroyNotify, StructureNotifyMask, quit, (void *)&scene);
