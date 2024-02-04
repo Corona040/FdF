@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/04 16:04:04 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/04 19:51:01 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 # define XK_p 0x0070
 # define WIN_X 1000
 # define WIN_Y 1000
-# define GRID_STEP 50
-# define Z_FACTOR 10
+# define GRID_STEP 10
+# define Z_FACTOR 5
 # define IMG_X 1000
 # define IMG_Y 1000
 # define CAM_POS 500
@@ -35,7 +35,7 @@
 # define ZOOM_FACTOR 25
 # define MOVE_FACTOR	1
 # define ROT_FACTOR .01
-# define ZOOM 5
+# define ZOOM 10
 
 typedef struct window
 {
@@ -89,7 +89,7 @@ typedef struct s_scene
 // draw.c
 void		draw_point(t_vector *p, t_img *img);
 void		connect_vertices(t_vector *v1, t_vector *v2, t_img *img);
-t_vector	**create_grid(int width, int height, int step);
+t_vector	**create_grid(int width, int height, float_t step);
 void		scene_draw(t_scene *scene);
 void		obj_rotate(t_obj *obj, t_vector axis, float_t a);
 void		obj_translate(t_obj *obj, t_vector axis, float_t val);

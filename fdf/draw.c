@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/04 16:15:27 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/04 19:44:28 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	connect_vertices(t_vector *v1, t_vector *v2, t_img *img)
 	}
 }
 
-t_vector	**create_grid(int width, int height, int step)
+t_vector	**create_grid(int width, int height, float_t step)
 {
 	t_vector	**grid;
 	int			i;

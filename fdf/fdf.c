@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:36:54 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/04 16:02:37 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/04 21:08:00 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	main(int argc, char **argv)
 	int			fd;
 	char		*line;
 	char		**z_val;
-	char		**z_vals[50];
+	char		**z_vals[1000];
 	void		*mlx_ptr;
 	void		*win_ptr;
 	t_win		win;
@@ -28,6 +28,8 @@ int	main(int argc, char **argv)
 	t_img		*img;
 	t_cam		cam;
 	t_scene		scene;
+
+	char		*aux;
 
 	grid_y = 0;
 	grid_x = 0;
@@ -57,6 +59,9 @@ int	main(int argc, char **argv)
 		{
 			for (int j = 0; z_vals[i][j]; j++)
 			{
+				aux = ft_strchr(z_vals[i][j], ',');
+				if (aux)
+					*aux = '\0';
 				grid[grid_x - j - 1][i].y = -ft_atoi(z_vals[i][j]) * Z_FACTOR;
 			}
 		}
