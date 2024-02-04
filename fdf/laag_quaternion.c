@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quaternion.c                                       :+:      :+:    :+:   */
+/*   laag_quaternion.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 23:05:09 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/02 00:58:30 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/03 21:32:16 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "laag.h"
 
 float_t	q_modules(t_quaternion *q)
 {
@@ -34,7 +34,7 @@ t_quaternion	*q_conjugate(t_quaternion *q, int inplace)
 	{
 		result = ft_calloc(1, sizeof(*result));
 		if (!result)
-			ft_printf("quaternion fail\n");
+			return (0);
 	}
 	result->w = q->w;
 	result->i = -(q->i);
@@ -53,7 +53,7 @@ t_quaternion	*q_scalar_product(float_t a, t_quaternion *q, int inplace)
 	{
 		result = ft_calloc(1, sizeof(*result));
 		if (!result)
-			ft_printf("quaternion fail\n");
+			return (0);
 	}
 	result->w = a * q->w;
 	result->i = a * q->i;
@@ -71,6 +71,8 @@ t_quaternion	*q_inverse(t_quaternion *q, int inplace)
 		result = q;
 	norm_sqr = q_modules(q);
 	result = q_conjugate(q, inplace);
+	if (!result)
+		return (0);
 	result->w /= norm_sqr;
 	result->i /= norm_sqr;
 	result->j /= norm_sqr;
@@ -88,10 +90,10 @@ t_quaternion	*q_product(t_quaternion *q, t_quaternion *p, int inplace)
 	u = (t_vector){q->i, q->j, q->k};
 	v = (t_vector){p->i, p->j, p->k};
 	result = ft_calloc(1, sizeof(*result));
-	if (!result)
-		ft_printf("prod_q fail\n");
-	result->w = (q->w * p->w) - v_dot_product(&u, &v);
 	uv = v_vector_product(&u, &v);
+	if (!result || !uv)
+		return (0);
+	result->w = (q->w * p->w) - v_dot_product(&u, &v);
 	v_scalar_product(q->w, &v, 1);
 	v_sum(v_sum(uv, v_scalar_product(p->w, &u, 1), 1), &v, 1);
 	if (inplace)

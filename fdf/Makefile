@@ -1,8 +1,13 @@
 NAME = fdf
 
-SRCS = draw.c linalg.c quaternion.c
+SRCS = draw.c image.c
 
-OBJS = $(SRCS:.c=.o)
+laag_SRCS =	laag_basic.c		\
+			laag_operations.c	\
+			laag_product.c		\
+			laag_quaternion.c 
+
+OBJS = $(SRCS:.c=.o) $(laag_SRCS:.c=.o)
 
 CC = cc
 
@@ -25,7 +30,7 @@ $(LIBFT)/libft.a:
 	@make -C libft printf
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -I$(LIBFT) -c $<
 
 clean:
 	rm -rf $(OBJS)

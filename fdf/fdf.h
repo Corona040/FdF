@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/03 18:09:36 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/04 04:00:55 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,17 @@
 # include "minilibx-linux/mlx.h"
 # include "libft/libft.h"
 # include "libft/ft_printf.h"
+# include "laag.h"
 
 # define XK_Escape 0xff1b
 
-struct window
+typedef struct window
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
-};
+}	t_win;
 
-typedef struct s_vector
-{
-	float_t x;
-	float_t y;
-	float_t z;
-}	t_vector;
-
-typedef struct s_quaternion
-{
-	float_t	w;
-	float_t	i;
-	float_t	j;
-	float_t	k;
-}	t_quaternion;
-
-typedef struct s_image_conf
+typedef struct s_image_configuration
 {
 	int		bpp;
 	int		len;
@@ -56,41 +42,40 @@ typedef struct s_image
 	int			width;
 	int			height;
 	t_img_conf	conf;
+	int			x;
+	int			y;
 }	t_img;
 
 typedef struct s_object
 {
-	int				size;
-	t_vector		origin;
-	t_vector		speed;
-	t_vector		**obj;
-	struct window	*window;
-}	t_object;
+	t_vector	origin;
+	int			width;
+	int			height;
+	t_vector	**grid;
+	t_img		*img;
+	t_win		*win;
+}	t_obj;
+
+typedef struct s_camera
+{
+	t_vector	origin;
+	float_t		dist;
+}	t_cam;
+
+typedef struct s_scene
+{
+	t_obj		*obj;
+	t_cam		*cam;
+	t_vector	origin;
+}	t_scene;
 
 /* ************************************************************************** */
-// linalg.c
-t_vector	*v_sum(t_vector *u, t_vector *v, int inplace);
-t_vector	*v_assign(t_vector *u, t_vector v, int inplace);
-float_t		v_distance(t_vector *u, t_vector *v);
-float_t		v_dot_product(t_vector *u, t_vector *v);
-t_vector	*v_norm(t_vector *u, int inplace);
-t_vector	*v_scalar_product(float_t a, t_vector *u, int inplace);
-t_vector	*v_vector_product(t_vector *u, t_vector *v);
-float_t		v_module(t_vector *u);
-t_vector	*v_proj(t_vector *a, t_vector *b, int inplace);
-t_vector	*v_planeproj(t_vector *u, t_vector axis, int inplace);
-t_vector	*v_rotate(t_vector *u, t_vector axis, float_t a, int inplace);
-t_vector	*v_translate(t_vector *u, t_vector axis, float_t val, int inplace);
-/* ************************************************************************** */
-// quaternion.c
-float_t			q_modules(t_quaternion *q);
-t_quaternion	*q_conjugate(t_quaternion *q, int inplace);
-t_quaternion	*q_scalar_product(float_t a, t_quaternion *q, int inplace);
-t_quaternion	*q_inverse(t_quaternion *q, int inplace);
-t_quaternion	*q_product(t_quaternion *q, t_quaternion *p, int inplace);
-/* ************************************************************************** */
 // draw.c
-void	draw_point(t_vector *p, struct window *window);
-void	connect_vertices(t_vector *vertice1, t_vector *vertice2, struct window *window);
+void		draw_point(t_vector *p, t_img *img);
+void		connect_vertices(t_vector *v1, t_vector *v2, t_img *img);
+t_img		*create_img(void *mlx_ptr, int width, int height, t_img_conf *conf);
+int			img_pixel_put(t_img *img, int x, int y, int color);
+t_vector	**create_grid(int width, int height, int step);
+void		scene_draw(t_scene *scene);
 
 #endif
