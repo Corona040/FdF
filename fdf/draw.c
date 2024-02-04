@@ -6,33 +6,31 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/04 14:09:23 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/04 16:15:27 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-#define WIN_X 1000
-#define WIN_Y 1000
-#define GRID_STEP 100
-#define IMG_X 1000
-#define IMG_Y 1000
-#define CAM_POS 500
-#define FOV 100
-#define ZOOM_FACTOR 25
-#define MOVE_FACTOR	1
-#define ROT_FACTOR .01
-#define ZOOM 15
-
 void	draw_point(t_vector *p, t_img *img)
 {
 	t_vector	*coords;
+	float_t		z_warp;
+	int			pixel;
+	int			r;
+	int			g;
+	int			b;
 
 	coords = ft_calloc(1, sizeof(*coords));
+	z_warp = (p->z + ((float_t) 434/2)) / (1000 + 434);
+	r = -0xff * z_warp;
+	g = 0x11 + (0x11 * z_warp)/2;
+	b = 0x44 + (0x11 * z_warp)/2;
+	pixel = (0x00000000 | (r << (2 * 8)) | (g << (1 * 8)) | b);
 	v_assign(coords, *p, 1);
 	v_planeproj(coords, (t_vector){0, 0, 1}, 1);
 	// TODO COORDS IS ALLOCATED AND CAN RETURN NULL, MAKE A FUNCTION THAT DOESNT DEPEND ON ALLOCATION !!!
-	img_pixel_put(img, coords->x, coords->y, 0xffffffff);
+	img_pixel_put(img, coords->x, coords->y, pixel);
 	free(coords);
 }
 
@@ -62,6 +60,7 @@ t_vector	**create_grid(int width, int height, int step)
 {
 	t_vector	**grid;
 	int			i;
+	int			j;
 
 	grid = ft_calloc(width, sizeof(t_vector *));
 	if (!grid)
@@ -74,10 +73,17 @@ t_vector	**create_grid(int width, int height, int step)
 			return (0);
 	}
 	(void)step;
-	v_assign(&grid[0][0], (t_vector){-(float_t)step / 2, 0, -(float_t)step / 2}, 1);
-	v_assign(&grid[1][0], (t_vector){(float_t)step / 2, 0, -(float_t)step / 2}, 1);
-	v_assign(&grid[0][1], (t_vector){-(float_t)step / 2, 0, (float_t)step / 2}, 1);
-	v_assign(&grid[1][1], (t_vector){(float)step / 2, 0, (float_t)step / 2}, 1);
+	i = 0;
+	while (i < width)
+	{
+		j = 0;
+		while (j < height)
+		{
+			v_assign(&grid[i][j], (t_vector){i * (float_t)step - ((float_t)(step * width) / 2) + (float_t)step / 2, 0, j * (float_t)step - ((float_t)(step * height) / 2) + (float_t)step / 2}, 1);
+			j++;
+		}
+		i++;
+	}
 	return (grid);
 }
 
@@ -99,15 +105,21 @@ void	scene_draw(t_scene *scene)
 		while (j < obj->height)
 		{
 			node2 = v_sum(&obj->grid[i][j], &cam->origin, 0);
-			node2->x = node2->x * (cam->dist / node2->z) * ZOOM;
-			node2->y = node2->y * (cam->dist / node2->z) * ZOOM;
+			if (scene->perspective)
+			{
+				node2->x = node2->x * (cam->dist / node2->z) * ZOOM;
+				node2->y = node2->y * (cam->dist / node2->z) * ZOOM;
+			}
 			v_sum(node2, &obj->origin, 1);
 			// MORE ALLOCS MORE POINTS OF FAILURE
 			if (i > 0)
 			{
 				node1 = v_sum(&obj->grid[i - 1][j], &cam->origin, 0);
-				node1->x = node1->x * (cam->dist / node1->z) * ZOOM;
-				node1->y = node1->y * (cam->dist / node1->z) * ZOOM;
+				if (scene->perspective)
+				{
+					node1->x = node1->x * (cam->dist / node1->z) * ZOOM;
+					node1->y = node1->y * (cam->dist / node1->z) * ZOOM;
+				}
 				if (node1->z > cam->dist && node2->z > cam->dist)
 				{
 					v_sum(node1, &obj->origin, 1);
@@ -118,8 +130,11 @@ void	scene_draw(t_scene *scene)
 			if (j > 0)
 			{
 				node1 = v_sum(&obj->grid[i][j - 1], &cam->origin, 0);
-				node1->x = node1->x * (cam->dist / node1->z) * ZOOM;
-				node1->y = node1->y * (cam->dist / node1->z) * ZOOM;
+				if (scene->perspective)
+				{
+					node1->x = node1->x * (cam->dist / node1->z) * ZOOM;
+					node1->y = node1->y * (cam->dist / node1->z) * ZOOM;
+				}
 				if (node1->z > cam->dist && node2->z > cam->dist)
 				{
 					v_sum(node1, &obj->origin, 1);
@@ -254,9 +269,9 @@ int	mouse_press_hook(int button, int x, int y, void *param)
 		scene->origin = (t_vector){x, y, 0};
 		mlx_loop_hook(win->mlx_ptr, scene_shift, param);
 	}
-	else if (button == 4)
+	else if (button == 4 && scene->perspective)
 		scene->cam->origin.z -= ZOOM_FACTOR;
-	else if (button == 5)
+	else if (button == 5 && scene->perspective)
 		scene->cam->origin.z += ZOOM_FACTOR;
 	return (0);
 }
@@ -291,37 +306,12 @@ int	quit(void *param)
 
 int	key_hook(int keycode, void *param)
 {
+	t_scene	*scene;
+
+	scene = (t_scene *)param;
 	if (keycode == XK_Escape)
 		quit(param);
+	if (keycode == XK_p)
+		scene->perspective = (scene->perspective + 1) % 2;
 	return (0);
-}
-
-int	main(void)
-{
-	void		*mlx_ptr;
-	void		*win_ptr;
-	t_win		win;
-	t_vector	**grid;
-	t_obj		obj;
-	t_img		*img;
-	t_cam		cam;
-	t_scene		scene;
-
-	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, WIN_X, WIN_Y, "FdF by ecorona-");
-	win = (t_win){mlx_ptr, win_ptr};
-	grid = create_grid(2, 2, GRID_STEP);
-	img = create_img(win.mlx_ptr, IMG_X, IMG_Y, NULL);
-	img->x = (float_t)(WIN_X - IMG_X) / 2;
-	img->y = (float_t)(WIN_Y - IMG_Y) / 2;
-	obj = (t_obj){(t_vector){(float_t)IMG_X / 2, (float_t)IMG_Y / 2, 0}, 2, 2, grid, img, &win};
-	cam = (t_cam){(t_vector){0, 0, CAM_POS}, FOV};
-	scene = (t_scene){&obj, &cam, (t_vector){0, 0, 0}};
-	mlx_do_key_autorepeatoff(mlx_ptr);
-	mlx_hook(win_ptr, DestroyNotify, StructureNotifyMask, quit, (void *)&scene);
-	mlx_hook(win_ptr, ButtonPress, ButtonPressMask, mouse_press_hook, (void *)&scene);
-	mlx_hook(win_ptr, ButtonRelease, ButtonReleaseMask, mouse_release_hook, (void *)&scene);
-	mlx_key_hook(win_ptr, key_hook, (void *)&scene);
-	mlx_loop_hook(mlx_ptr, animate, (void *)&scene);
-	mlx_loop(mlx_ptr);
 }

@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 14:28:31 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/01/26 12:42:12 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/04 15:08:44 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,23 +39,23 @@ char	*read_buf(char *buf, int *loop)
 	int		new_line;
 	char	*line;
 
-	buf_len = ft_strchr(buf, 0);
-	new_line = ft_strchr(buf, '\n');
+	buf_len = gnl_strchr(buf, 0);
+	new_line = gnl_strchr(buf, '\n');
 	if (new_line > 0 && new_line <= buf_len)
 	{
-		line = ft_calloc(new_line + 1);
+		line = gnl_calloc(new_line + 1);
 		if (!line)
 			return (NULL);
-		ft_strcpy(line, buf, 0, new_line);
+		gnl_strcpy(line, buf, 0, new_line);
 		write_buf(buf, new_line, buf_len);
 		*loop = 0;
 	}
 	else
 	{
-		line = ft_calloc(buf_len + 1);
+		line = gnl_calloc(buf_len + 1);
 		if (!line)
 			return (NULL);
-		ft_strcpy(line, buf, 0, buf_len);
+		gnl_strcpy(line, buf, 0, buf_len);
 		write_buf(buf, 0, 0);
 	}
 	return (line);
@@ -86,9 +86,9 @@ char	*read_fd(int fd, char *buf, char *line, int *loop)
 	{
 		aux = read_buf(buf, loop);
 		temp = line;
-		line = ft_strjoin(line, aux);
-		ft_free(aux);
-		ft_free(temp);
+		line = gnl_strjoin(line, aux);
+		gnl_free(aux);
+		gnl_free(temp);
 		if (!line)
 			return (NULL);
 	}
@@ -111,31 +111,3 @@ int	end_of_file(int read_size, int *loop, char *line)
 	}
 	return (0);
 }
-
-/*
-#include <fcntl.h>
-#include <stdio.h>
-
-int	main(void)
-{
-	int		fd;
-	char	*line;
-	int		i;
-
-
-	fd = open("test.txt",O_RDONLY);
-	i = 1;
-	line = (void *)1;
-	while (line)
-	{
-		line =  get_next_line(fd);
-		printf("call %i:\n%s\n",i++,line);
-		if (line)
-		{
-			free(line);
-			line = (void *)1;
-		}
-	}
-	close(fd);
-}
-*/

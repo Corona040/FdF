@@ -1,6 +1,6 @@
 NAME = fdf
 
-SRCS = draw.c image.c
+SRCS = draw.c image.c fdf.c
 
 laag_SRCS =	laag_basic.c		\
 			laag_operations.c	\
@@ -27,7 +27,7 @@ $(NAME): $(OBJS) $(LIBFT)/libft.a
 	$(CC) $(CFLAGS) $(OBJS) $(MLXFLAGS) $(FTFLAGS) -lm -o $@
 
 $(LIBFT)/libft.a:
-	@make -C libft printf
+	@make -C libft complete
 
 %.o: %.c
 	$(CC) $(CFLAGS) -I$(LIBFT) -c $<
