@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/04 19:51:01 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/02/07 18:23:45 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 # define XK_p 0x0070
 # define WIN_X 1000
 # define WIN_Y 1000
-# define GRID_STEP 10
-# define Z_FACTOR 5
+# define GRID_STEP 20
+# define Z_FACTOR 20
 # define IMG_X 1000
 # define IMG_Y 1000
 # define CAM_POS 500
@@ -88,6 +88,7 @@ typedef struct s_scene
 /* ************************************************************************** */
 // draw.c
 void		draw_point(t_vector *p, t_img *img);
+int			get_color_from_warp(float_t z_warp);
 void		connect_vertices(t_vector *v1, t_vector *v2, t_img *img);
 t_vector	**create_grid(int width, int height, float_t step);
 void		scene_draw(t_scene *scene);

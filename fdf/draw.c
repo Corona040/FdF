@@ -6,32 +6,40 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/02/04 19:44:28 by ecorona-         ###   ########.fr       */
+=======
+/*   Updated: 2024/02/06 16:27:45 by ecorona-         ###   ########.fr       */
+>>>>>>> 1df9ff5 (Fix norm errors)
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
+// coords : MAKE A FUNCTION THAT DOESNT DEPEND ON ALLOCATION !!!
 void	draw_point(t_vector *p, t_img *img)
 {
 	t_vector	*coords;
 	float_t		z_warp;
-	int			pixel;
-	int			r;
-	int			g;
-	int			b;
 
 	coords = ft_calloc(1, sizeof(*coords));
-	z_warp = (p->z + ((float_t) 434/2)) / (1000 + 434);
-	r = -0xff * z_warp;
-	g = 0x11 + (0x11 * z_warp)/2;
-	b = 0x44 + (0x11 * z_warp)/2;
-	pixel = (0x00000000 | (r << (2 * 8)) | (g << (1 * 8)) | b);
+	z_warp = (p->z + ((float_t) 434 / 2)) / (1000 + 434);
 	v_assign(coords, *p, 1);
 	v_planeproj(coords, (t_vector){0, 0, 1}, 1);
-	// TODO COORDS IS ALLOCATED AND CAN RETURN NULL, MAKE A FUNCTION THAT DOESNT DEPEND ON ALLOCATION !!!
-	img_pixel_put(img, coords->x, coords->y, pixel);
+	img_pixel_put(img, coords->x, coords->y, get_color_from_warp(z_warp));
 	free(coords);
+}
+
+int	get_color_from_warp(float_t z_warp)
+{
+	int	r;
+	int	g;
+	int	b;
+
+	r = -0xff * z_warp;
+	g = 0x11 + (0x11 * z_warp) / 2;
+	b = 0x44 + (0x11 * z_warp) / 2;
+	return (0x00000000 | (r << (2 * 8)) | (g << (1 * 8)) | b);
 }
 
 void	connect_vertices(t_vector *v1, t_vector *v2, t_img *img)
@@ -72,7 +80,6 @@ t_vector	**create_grid(int width, int height, float_t step)
 		if (!grid[i++])
 			return (0);
 	}
-	(void)step;
 	i = 0;
 	while (i < width)
 	{
@@ -87,12 +94,12 @@ t_vector	**create_grid(int width, int height, float_t step)
 	return (grid);
 }
 
+// MORE ALLOCS MORE POINTS OF FAILURE
 void	scene_draw(t_scene *scene)
 {
 	int			i;
 	int			j;
-	t_vector	*node1;
-	t_vector	*node2;
+	t_vector	*node[2];
 	t_obj		*obj;
 	t_cam		*cam;
 
@@ -104,45 +111,44 @@ void	scene_draw(t_scene *scene)
 		j = 0;
 		while (j < obj->height)
 		{
-			node2 = v_sum(&obj->grid[i][j], &cam->origin, 0);
+			node[0] = v_sum(&obj->grid[i][j], &cam->origin, 0);
 			if (scene->perspective)
 			{
-				node2->x = node2->x * (cam->dist / node2->z) * ZOOM;
-				node2->y = node2->y * (cam->dist / node2->z) * ZOOM;
+				node[0]->x = node[0]->x * (cam->dist / node[0]->z) * ZOOM;
+				node[0]->y = node[0]->y * (cam->dist / node[0]->z) * ZOOM;
 			}
-			v_sum(node2, &obj->origin, 1);
-			// MORE ALLOCS MORE POINTS OF FAILURE
+			v_sum(node[0], &obj->origin, 1);
 			if (i > 0)
 			{
-				node1 = v_sum(&obj->grid[i - 1][j], &cam->origin, 0);
+				node[1] = v_sum(&obj->grid[i - 1][j], &cam->origin, 0);
 				if (scene->perspective)
 				{
-					node1->x = node1->x * (cam->dist / node1->z) * ZOOM;
-					node1->y = node1->y * (cam->dist / node1->z) * ZOOM;
+					node[1]->x = node[1]->x * (cam->dist / node[1]->z) * ZOOM;
+					node[1]->y = node[1]->y * (cam->dist / node[1]->z) * ZOOM;
 				}
-				if (node1->z > cam->dist && node2->z > cam->dist)
+				if (node[1]->z > cam->dist && node[0]->z > cam->dist)
 				{
-					v_sum(node1, &obj->origin, 1);
-					connect_vertices(node1, node2, obj->img);
+					v_sum(node[1], &obj->origin, 1);
+					connect_vertices(node[1], node[0], obj->img);
 				}
-				free(node1);
+				free(node[1]);
 			}
 			if (j > 0)
 			{
-				node1 = v_sum(&obj->grid[i][j - 1], &cam->origin, 0);
+				node[1] = v_sum(&obj->grid[i][j - 1], &cam->origin, 0);
 				if (scene->perspective)
 				{
-					node1->x = node1->x * (cam->dist / node1->z) * ZOOM;
-					node1->y = node1->y * (cam->dist / node1->z) * ZOOM;
+					node[1]->x = node[1]->x * (cam->dist / node[1]->z) * ZOOM;
+					node[1]->y = node[1]->y * (cam->dist / node[1]->z) * ZOOM;
 				}
-				if (node1->z > cam->dist && node2->z > cam->dist)
+				if (node[1]->z > cam->dist && node[0]->z > cam->dist)
 				{
-					v_sum(node1, &obj->origin, 1);
-					connect_vertices(node1, node2, obj->img);
+					v_sum(node[1], &obj->origin, 1);
+					connect_vertices(node[1], node[0], obj->img);
 				}
-				free(node1);
+				free(node[1]);
 			}
-			free(node2);
+			free(node[0]);
 			j++;
 		}
 		i++;
@@ -181,10 +187,6 @@ int	animate(void *param)
 	t_win		*win;
 	t_img		*img;
 
-	(void)param;
-	(void)scene;
-	(void)win;
-	(void)img;
 	scene = (t_scene *)param;
 	win = scene->obj->win;
 	img = create_img(win->mlx_ptr, IMG_X, IMG_Y, NULL);
@@ -194,8 +196,10 @@ int	animate(void *param)
 	scene->obj->img = img;
 	mlx_clear_window(win->mlx_ptr, win->win_ptr);
 	scene_draw(scene);
-	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, img->img_ptr, (int) img->x, (int) img->y);
-	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, img->img_ptr, img->x, img->y);
+	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, \
+		img->img_ptr, (int) img->x, (int) img->y);
+	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, \
+		img->img_ptr, img->x, img->y);
 	return (0);
 }
 
@@ -205,8 +209,7 @@ int	scene_rot(void *param)
 	t_img		*img;
 	t_win		*win;
 	t_vector	v;
-	int			x;
-	int			y;
+	int			mouse_pos[2];
 
 	scene = (t_scene *)param;
 	img = scene->obj->img;
@@ -216,12 +219,15 @@ int	scene_rot(void *param)
 	img->y = scene->obj->img->y;
 	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);
 	scene->obj->img = img;
-	mlx_mouse_get_pos(win->mlx_ptr, win->win_ptr, &x, &y);
-	v = (t_vector){x, y, 0};
-	obj_rotate(scene->obj, (t_vector){-(y - scene->origin.y), x - scene->origin.x, 0}, -v_distance(&scene->origin, &v) * ROT_FACTOR);
+	mlx_mouse_get_pos(win->mlx_ptr, win->win_ptr, mouse_pos, mouse_pos + 1);
+	v = (t_vector){mouse_pos[0], mouse_pos[1], 0};
+	obj_rotate(scene->obj, (t_vector){(mouse_pos[1] - scene->origin.y) * -1, \
+		mouse_pos[0] - scene->origin.x, 0}, \
+		-v_distance(&scene->origin, &v) * ROT_FACTOR);
 	scene->origin = v;
 	scene_draw(scene);
-	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, img->img_ptr, img->x, img->y);
+	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, \
+		img->img_ptr, img->x, img->y);
 	return (0);
 }
 
@@ -231,8 +237,7 @@ int	scene_shift(void *param)
 	t_img		*img;
 	t_win		*win;
 	t_vector	v;
-	int			x;
-	int			y;
+	int			mouse_pos[2];
 
 	scene = (t_scene *)param;
 	img = scene->obj->img;
@@ -242,13 +247,14 @@ int	scene_shift(void *param)
 	img->y = scene->obj->img->y;
 	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);
 	scene->obj->img = img;
-	mlx_mouse_get_pos(win->mlx_ptr, win->win_ptr, &x, &y);
-	v = (t_vector){x, y, 0};
+	mlx_mouse_get_pos(win->mlx_ptr, win->win_ptr, mouse_pos, mouse_pos + 1);
+	v = (t_vector){mouse_pos[0], mouse_pos[1], 0};
 	img->x += (v.x - scene->origin.x) * MOVE_FACTOR;
 	img->y += (v.y - scene->origin.y) * MOVE_FACTOR;
 	scene->origin = v;
 	scene_draw(scene);
-	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, img->img_ptr, img->x, img->y);
+	mlx_put_image_to_window(win->mlx_ptr, win->win_ptr, \
+		img->img_ptr, img->x, img->y);
 	return (0);
 }
 
