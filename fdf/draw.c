@@ -7,27 +7,29 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*   Updated: 2024/02/04 19:44:28 by ecorona-         ###   ########.fr       */
 =======
 /*   Updated: 2024/02/06 16:27:45 by ecorona-         ###   ########.fr       */
 >>>>>>> 1df9ff5 (Fix norm errors)
+=======
+/*   Updated: 2024/02/07 17:59:44 by ecorona-         ###   ########.fr       */
+>>>>>>> 0bb12c1 (Fix unnecessary alloc)
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "laag.h"
 
-// coords : MAKE A FUNCTION THAT DOESNT DEPEND ON ALLOCATION !!!
 void	draw_point(t_vector *p, t_img *img)
 {
-	t_vector	*coords;
+	t_vector	coords;
 	float_t		z_warp;
 
-	coords = ft_calloc(1, sizeof(*coords));
 	z_warp = (p->z + ((float_t) 434 / 2)) / (1000 + 434);
-	v_assign(coords, *p, 1);
-	v_planeproj(coords, (t_vector){0, 0, 1}, 1);
-	img_pixel_put(img, coords->x, coords->y, get_color_from_warp(z_warp));
-	free(coords);
+	v_assign(&coords, *p, 1);
+	v_planeproj(&coords, (t_vector){0, 0, 1}, 1);
+	img_pixel_put(img, coords.x, coords.y, get_color_from_warp(z_warp));
 }
 
 int	get_color_from_warp(float_t z_warp)
@@ -94,12 +96,29 @@ t_vector	**create_grid(int width, int height, float_t step)
 	return (grid);
 }
 
-// MORE ALLOCS MORE POINTS OF FAILURE
+t_vector	*add_perspective(t_vector *node, t_scene *scene, int inplace)
+{
+	t_vector	*result;
+
+	if (inplace)
+		result = node;
+	else
+	{
+		result = ft_calloc(1, sizeof(*result));
+		if (!result)
+			return (NULL);
+		result->z = node->z;
+	}
+	result->x = node->x * (scene->cam->dist / node->z) * ZOOM;
+	result->y = node->y * (scene->cam->dist / node->z) * ZOOM;
+	return (result);
+}
+
 void	scene_draw(t_scene *scene)
 {
 	int			i;
 	int			j;
-	t_vector	*node[2];
+	t_vector	node[2];
 	t_obj		*obj;
 	t_cam		*cam;
 
@@ -111,44 +130,35 @@ void	scene_draw(t_scene *scene)
 		j = 0;
 		while (j < obj->height)
 		{
-			node[0] = v_sum(&obj->grid[i][j], &cam->origin, 0);
+			v_assign(&node[0], obj->grid[i][j], 1);
+			v_sum(&node[0], &cam->origin, 1);
 			if (scene->perspective)
-			{
-				node[0]->x = node[0]->x * (cam->dist / node[0]->z) * ZOOM;
-				node[0]->y = node[0]->y * (cam->dist / node[0]->z) * ZOOM;
-			}
-			v_sum(node[0], &obj->origin, 1);
+				add_perspective(&node[0], scene, 1);
+			v_sum(&node[0], &obj->origin, 1);
 			if (i > 0)
 			{
-				node[1] = v_sum(&obj->grid[i - 1][j], &cam->origin, 0);
+				v_assign(&node[1], obj->grid[i - 1][j], 1);
+				v_sum(&node[1], &cam->origin, 1);
 				if (scene->perspective)
+					add_perspective(&node[1], scene, 1);
+				if (node[1].z > cam->dist && node[0].z > cam->dist)
 				{
-					node[1]->x = node[1]->x * (cam->dist / node[1]->z) * ZOOM;
-					node[1]->y = node[1]->y * (cam->dist / node[1]->z) * ZOOM;
+					v_sum(&node[1], &obj->origin, 1);
+					connect_vertices(&node[1], &node[0], obj->img);
 				}
-				if (node[1]->z > cam->dist && node[0]->z > cam->dist)
-				{
-					v_sum(node[1], &obj->origin, 1);
-					connect_vertices(node[1], node[0], obj->img);
-				}
-				free(node[1]);
 			}
 			if (j > 0)
 			{
-				node[1] = v_sum(&obj->grid[i][j - 1], &cam->origin, 0);
+				v_assign(&node[1], obj->grid[i][j - 1], 1);
+				v_sum(&node[1], &cam->origin, 1);
 				if (scene->perspective)
+					add_perspective(&node[1], scene, 1);
+				if (node[1].z > cam->dist && node[0].z > cam->dist)
 				{
-					node[1]->x = node[1]->x * (cam->dist / node[1]->z) * ZOOM;
-					node[1]->y = node[1]->y * (cam->dist / node[1]->z) * ZOOM;
+					v_sum(&node[1], &obj->origin, 1);
+					connect_vertices(&node[1], &node[0], obj->img);
 				}
-				if (node[1]->z > cam->dist && node[0]->z > cam->dist)
-				{
-					v_sum(node[1], &obj->origin, 1);
-					connect_vertices(node[1], node[0], obj->img);
-				}
-				free(node[1]);
 			}
-			free(node[0]);
 			j++;
 		}
 		i++;

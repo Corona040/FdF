@@ -6,7 +6,11 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:36:54 by ecorona-          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/02/04 21:08:00 by ecorona-         ###   ########.fr       */
+=======
+/*   Updated: 2024/02/07 18:12:23 by ecorona-         ###   ########.fr       */
+>>>>>>> 0bb12c1 (Fix unnecessary alloc)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +47,20 @@ int	main(int argc, char **argv)
 			while (line)
 			{
 				z_val = ft_split(line, ' ');
+				free(line);
 				z_vals[grid_y] = z_val;
 				grid_y++;
 				line = get_next_line(fd);
 				grid_x = 0;
 				while (z_val[grid_x])
+				{
+					// free(z_val[grid_x]);
 					grid_x++;
+				}
+				// free(z_val);
 			}
 		}
+		close(fd);
 		mlx_ptr = mlx_init();
 		win_ptr = mlx_new_window(mlx_ptr, WIN_X, WIN_Y, "FdF by ecorona-");
 		win = (t_win){mlx_ptr, win_ptr};
