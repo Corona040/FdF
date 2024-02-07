@@ -8,6 +8,7 @@
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*   Updated: 2024/02/04 19:44:28 by ecorona-         ###   ########.fr       */
 =======
 /*   Updated: 2024/02/06 16:27:45 by ecorona-         ###   ########.fr       */
@@ -15,11 +16,13 @@
 =======
 /*   Updated: 2024/02/07 17:59:44 by ecorona-         ###   ########.fr       */
 >>>>>>> 0bb12c1 (Fix unnecessary alloc)
+=======
+/*   Updated: 2024/02/07 18:21:05 by ecorona-         ###   ########.fr       */
+>>>>>>> 2fb3109 (Fix extra header)
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include "laag.h"
 
 void	draw_point(t_vector *p, t_img *img)
 {
