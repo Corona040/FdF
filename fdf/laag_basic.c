@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:19:30 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/27 19:55:21 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/27 20:19:48 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_vector	*v_sum(t_vector *u, t_vector *v, int inplace)
 
 float_t	v_module(t_vector *u)
 {
-	return (fabsf(v_dot_product(u, u))*fabsf(v_dot_product(u, u)));
+	return (sqrtf(fabsf(v_dot_product(u, u))));
 }
 
 float_t	v_distance(t_vector *u, t_vector *v)
