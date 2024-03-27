@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/07 18:28:30 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/27 20:28:21 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ t_vector	*add_perspective(t_vector *node, t_scene *scene, int inplace)
 	return (result);
 }
 
+// should only draw node with inferior z if x and y are superior
+// ^^ womp womp wouldn't work 😂
 void	scene_draw(t_scene *scene)
 {
 	int			i;

@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/07 18:23:45 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/27 20:45:11 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define WIN_X 1000
 # define WIN_Y 1000
 # define GRID_STEP 20
-# define Z_FACTOR 20
+# define Z_FACTOR 5
 # define IMG_X 1000
 # define IMG_Y 1000
 # define CAM_POS 500
