@@ -6,69 +6,77 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 19:49:01 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/27 20:12:39 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:01:43 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-// should return grid_x, grid_y and z_vals -> map struct with dim and vals
-//		(dim attribute)
 // line and z_val have allocs -> need free
-// also needs colors for points
-int read_map(char *path)
+typedef struct s_map
 {
-	int		grid_x;
-	int		grid_y;
-	int		z_val;
-	int		z_vals;
+	int		x;
+	int		y;
+	char	**vals[1000];
+}	t_map;
+
+t_map	read_map_file(char *path)
+{
+	t_map	map;
+	char	**z_val;
 	char	*line;
 
-	grid_y = 0;
-	grid_x = 0;
+	map.y = 0;
+	map.x = 0;
 	fd = open(argv[1], O_RDONLY);
 	if (fd > 2)
 	{
-		grid_y = 0;
+		map.y = 0;
 		line = get_next_line(fd);
 		while (line)
 		{
 			z_val = ft_split(line, ' ');
 			free(line);
-			z_vals[grid_y] = z_val;
-			grid_y++;
+			map.vals[grid_y] = z_val;
+			map.y++;
 			line = get_next_line(fd);
-			grid_x = 0;
-			while (z_val[grid_x])
+			map.x = 0;
+			while (z_val[map.x])
 			{
 				// free(z_val[grid_x]);
-				grid_x++;
+				map.x++;
 			}
 			// free(z_val);
 		}
 	}
 	close(fd);
+	return (map)
 	// return (map structure);
 }
 
-// illegal "for" 🚨🚨🚨🚓🚓🚓
-int get_colors_i_think_prolly(void) //grid?
+t_vector **get_grid_from_map(t_map map)
 {
-	int		grid_y;
-	int		**z_vals;
-	char	*aux;
-	// grid??
+	char		*aux;
+	t_vector	**grid;
+	int			i;
+	int			j;
 
-	for (int i = 0; i < grid_y; i++)
+	grid = create_grid(map.x, map.y, GRID_STEP);
+	i = 0;
+	while (i < map.y)
 	{
-		for (int j = 0; z_vals[i][j]; j++)
+		j = 0;
+		while (map.vals[i][j])
 		{
-			aux = ft_strchr(z_vals[i][j], ',');
+			aux = ft_strchr(map.vals[i][j], ',');
 			if (aux)
 				*aux = '\0';
-			grid[grid_x - j - 1][i].y = -ft_atoi(z_vals[i][j]) * Z_FACTOR;
+			grid[map.x - j - 1][i].y = -ft_atoi(map.vals[i][j]) * Z_FACTOR;
+			j++;
 		}
+		i++;
 	}
+	return (grid);
 }
 
 /*
