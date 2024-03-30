@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/27 20:45:11 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/30 18:40:29 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@
 # define MOVE_FACTOR	1
 # define ROT_FACTOR .01
 # define ZOOM 10
+
+typedef struct s_map
+{
+	int		x;
+	int		y;
+	char	**vals[1000];
+}	t_map;
 
 typedef struct window
 {
@@ -85,6 +92,15 @@ typedef struct s_scene
 	int			perspective;
 }	t_scene;
 
+/* ************************************************************************** */
+// fdf.c
+void		isometric_ize(t_scene *scene);
+void		parallel_ize(t_scene *scene);
+void		hook_n_loop(t_scene *scene);
+/* ************************************************************************** */
+// read_map.c
+t_map		read_map_file(char *path);
+t_vector	**get_grid_from_map(t_map map);
 /* ************************************************************************** */
 // draw.c
 void		draw_point(t_vector *p, t_img *img);

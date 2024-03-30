@@ -1,6 +1,6 @@
 NAME = fdf
 
-SRCS = draw.c image.c fdf.c
+SRCS = draw.c image.c read_map.c fdf.c
 
 laag_SRCS =	laag_basic.c		\
 			laag_operations.c	\
