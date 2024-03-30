@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:36:54 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/30 18:55:16 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/30 20:28:42 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ int	main(int argc, char **argv)
 
 t_scene	init_scene_from_map(t_map map)
 {
-	t_win		win;
-	t_vector	**grid;
-	t_obj		obj;
-	t_img		*img;
-	t_cam		cam;
+	t_win	win;
+	t_grid	*grid;
+	t_obj	obj;
+	t_img	*img;
+	t_cam	cam;
 
 	win.mlx_ptr = mlx_init();
 	win.win_ptr = mlx_new_window(win.mlx_ptr, WIN_X, WIN_Y, "FdF by ecorona-");

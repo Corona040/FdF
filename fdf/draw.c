@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/30 18:56:50 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/30 20:31:24 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	connect_vertices(t_vector *v1, t_vector *v2, t_img *img)
 	}
 }
 
-t_vector	**create_grid(int width, int height, float_t step)
+t_vector	**create_gridv(int width, int height, float_t step)
 {
 	t_vector	**grid;
 	int			i;
@@ -83,6 +83,24 @@ t_vector	**create_grid(int width, int height, float_t step)
 			j++;
 		}
 		i++;
+	}
+	return (grid);
+}
+
+int	**create_gridc(int width, int height)
+{
+	int	**grid;
+	int	i;
+
+	grid = ft_calloc(width, sizeof(int *));
+	if (!grid)
+		return (0);
+	i = 0;
+	while (i < width)
+	{
+		grid[i] = ft_calloc(height, sizeof(**grid));
+		if (!grid[i++])
+			return (0);
 	}
 	return (grid);
 }
@@ -123,14 +141,14 @@ void	scene_draw(t_scene *scene)
 		j = 0;
 		while (j < obj->height)
 		{
-			v_assign(&node[0], obj->grid[i][j], 1);
+			v_assign(&node[0], obj->grid->v[i][j], 1);
 			v_sum(&node[0], &cam->origin, 1);
 			if (scene->perspective)
 				add_perspective(&node[0], scene, 1);
 			v_sum(&node[0], &obj->origin, 1);
 			if (i > 0)
 			{
-				v_assign(&node[1], obj->grid[i - 1][j], 1);
+				v_assign(&node[1], obj->grid->v[i - 1][j], 1);
 				v_sum(&node[1], &cam->origin, 1);
 				if (scene->perspective)
 					add_perspective(&node[1], scene, 1);
@@ -142,7 +160,7 @@ void	scene_draw(t_scene *scene)
 			}
 			if (j > 0)
 			{
-				v_assign(&node[1], obj->grid[i][j - 1], 1);
+				v_assign(&node[1], obj->grid->v[i][j - 1], 1);
 				v_sum(&node[1], &cam->origin, 1);
 				if (scene->perspective)
 					add_perspective(&node[1], scene, 1);
@@ -171,7 +189,7 @@ void	obj_rotate(t_obj *obj, t_vector axis, float_t a)
 			j = 0;
 			while (j < obj->height)
 			{
-				v_rotate(&obj->grid[i][j++], axis, a, 1);
+				v_rotate(&obj->grid->v[i][j++], axis, a, 1);
 			}
 			i++;
 		}

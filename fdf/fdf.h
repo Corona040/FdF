@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/30 18:56:01 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/30 20:48:47 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@
 # define MOVE_FACTOR	1
 # define ROT_FACTOR .01
 # define ZOOM 10
+
+typedef struct s_grid
+{
+	t_vector	**v;
+	int			**color;
+}	t_grid;
 
 typedef struct s_map
 {
@@ -73,7 +79,7 @@ typedef struct s_object
 	t_vector	origin;
 	int			width;
 	int			height;
-	t_vector	**grid;
+	t_grid		*grid;
 	t_img		*img;
 	t_win		*win;
 }	t_obj;
@@ -100,14 +106,16 @@ void		parallel_ize(t_scene *scene);
 void		hook_n_loop(t_scene *scene);
 /* ************************************************************************** */
 // read_map.c
+int			xatoi(char *hex);
 t_map		read_map_file(char *path);
-t_vector	**get_grid_from_map(t_map map);
+t_grid		*get_grid_from_map(t_map map);
 /* ************************************************************************** */
 // draw.c
 void		draw_point(t_vector *p, t_img *img);
 int			get_color_from_warp(float_t z_warp);
 void		connect_vertices(t_vector *v1, t_vector *v2, t_img *img);
-t_vector	**create_grid(int width, int height, float_t step);
+t_vector	**create_gridv(int width, int height, float_t step);
+int			**create_gridc(int width, int height);
 void		scene_draw(t_scene *scene);
 void		obj_rotate(t_obj *obj, t_vector axis, float_t a);
 void		obj_translate(t_obj *obj, t_vector axis, float_t val);
