@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 19:49:01 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/30 18:46:14 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/30 18:57:49 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ t_map	read_map_file(char *path)
 	}
 	close(fd);
 	return (map);
-	// return (map structure);
 }
 
 t_vector	**get_grid_from_map(t_map map)

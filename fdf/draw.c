@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/27 20:28:21 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/30 18:56:50 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,9 +318,9 @@ int	key_hook(int keycode, void *param)
 	t_scene	*scene;
 
 	scene = (t_scene *)param;
-	if (keycode == XK_Escape)
+	if (keycode == XK_ESCAPE)
 		quit(param);
-	if (keycode == XK_p)
+	if (keycode == XK_P)
 		scene->perspective = (scene->perspective + 1) % 2;
 	return (0);
 }

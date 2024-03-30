@@ -6,12 +6,12 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/30 18:40:29 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/30 18:56:01 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
-#define FDF_H
+# define FDF_H
 
 # include <fcntl.h>
 # include <math.h>
@@ -22,8 +22,8 @@
 # include "libft/get_next_line.h"
 # include "laag.h"
 
-# define XK_Escape 0xff1b
-# define XK_p 0x0070
+# define XK_ESCAPE 0xff1b
+# define XK_P 0x0070
 # define WIN_X 1000
 # define WIN_Y 1000
 # define GRID_STEP 20
@@ -94,6 +94,7 @@ typedef struct s_scene
 
 /* ************************************************************************** */
 // fdf.c
+t_scene		init_scene_from_map(t_map map);
 void		isometric_ize(t_scene *scene);
 void		parallel_ize(t_scene *scene);
 void		hook_n_loop(t_scene *scene);
