@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 19:49:01 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/30 20:54:44 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/31 00:49:16 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_map	read_map_file(char *path)
 
 	map.y = 0;
 	map.x = 0;
+	map.vals = 0;
 	fd = open(path, O_RDONLY);
 	if (fd > 2)
 	{
@@ -31,13 +32,18 @@ t_map	read_map_file(char *path)
 		{
 			z_val = ft_split(line, ' ');
 			free(line);
-			map.vals[map.y] = z_val;
+			if (map_append(&map, z_val) == -1)
+			{
+				//free(NULL);
+				//exit
+				(void)map;
+			}
 			map.y++;
 			line = get_next_line(fd);
 			map.x = 0;
 			while (z_val[map.x])
 			{
-				// free(z_val[grid_x]);
+				// free(z_val[map.x]);
 				map.x++;
 			}
 			// free(z_val);
@@ -52,6 +58,31 @@ t_map	read_map_file(char *path)
 	return (map);
 }
 
+int	map_append(t_map *map, char **z_val)
+{
+	char	***temp;
+	int		i;
+
+	temp = map->vals;
+	map->vals = ft_calloc(map->y + 1, sizeof(char **));
+	if (!map->vals)
+		return (-1);
+	if (temp)
+	{
+		i = 0;
+		while (i < map->y)
+		{
+			map->vals[i] = temp[i];
+			i++;
+		}
+		map->vals[i] = z_val;
+		free(temp);
+	}
+	else
+		map->vals[0] = z_val;
+	return (0);
+}
+
 t_grid	*get_grid_from_map(t_map map)
 {
 	t_grid	*grid;
@@ -61,7 +92,7 @@ t_grid	*get_grid_from_map(t_map map)
 
 	grid = ft_calloc(1, sizeof(*grid));
 	grid->v = create_gridv(map.x, map.y, GRID_STEP);
-	grid->color = create_gridc(map.x, map.y);
+	grid->c = create_gridc(map.x, map.y);
 	i = 0;
 	while (i < map.y)
 	{
@@ -69,10 +100,11 @@ t_grid	*get_grid_from_map(t_map map)
 		while (map.vals[i][j])
 		{
 			aux = ft_strchr(map.vals[i][j], ',');
+			grid->c[map.x - j - 1][i] = itoc(0xFFFFFF);
 			if (aux)
 			{
 				*aux = '\0';
-				grid->color[map.x - j - 1][i] = xatoi(aux + 1);
+				grid->c[map.x - j - 1][i] = itoc(xatoi(aux + 1));
 			}
 			grid->v[map.x - j - 1][i].y = -ft_atoi(map.vals[i][j]) * Z_FACTOR;
 			j++;
@@ -104,4 +136,25 @@ int	xatoi(char *hex)
 		}
 	}
 	return (result / 16);
+}
+
+t_rgb	itoc(int i)
+{
+	t_rgb	rgb;
+
+	rgb.r = (i&0xFF0000) / (256*256);
+	rgb.g = (i&0x00FF00) / (256);
+	rgb.b = i&0x0000FF;
+	return (rgb);
+}
+
+int	ctoi(t_rgb rgb)
+{
+	int	i;
+
+	i = 0;
+	i += rgb.r*256*256;
+	i += rgb.g*256;
+	i += rgb.b;
+	return (i);
 }

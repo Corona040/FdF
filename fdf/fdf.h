@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/30 20:48:47 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/31 02:06:21 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,24 @@
 # define ROT_FACTOR .01
 # define ZOOM 10
 
+typedef struct s_rgb
+{
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
+}	t_rgb;
+
 typedef struct s_grid
 {
 	t_vector	**v;
-	int			**color;
+	t_rgb		**c;
 }	t_grid;
 
 typedef struct s_map
 {
 	int		x;
 	int		y;
-	char	**vals[1000];
+	char	***vals;
 }	t_map;
 
 typedef struct window
@@ -100,22 +107,26 @@ typedef struct s_scene
 
 /* ************************************************************************** */
 // fdf.c
-t_scene		init_scene_from_map(t_map map);
+void		init_scene_from_map(t_scene *scene, t_map map);
 void		isometric_ize(t_scene *scene);
 void		parallel_ize(t_scene *scene);
 void		hook_n_loop(t_scene *scene);
 /* ************************************************************************** */
 // read_map.c
-int			xatoi(char *hex);
 t_map		read_map_file(char *path);
+int			map_append(t_map *map, char **z_val);
 t_grid		*get_grid_from_map(t_map map);
+int			xatoi(char *hex);
+t_rgb		itoc(int i);
+int			ctoi(t_rgb rgb);
 /* ************************************************************************** */
 // draw.c
-void		draw_point(t_vector *p, t_img *img);
+void		draw_point(t_vector *p, t_rgb color, t_img *img);
 int			get_color_from_warp(float_t z_warp);
-void		connect_vertices(t_vector *v1, t_vector *v2, t_img *img);
+void		connect_vertices(t_vector *v1, t_vector *v2, t_rgb c1, t_rgb c2, t_img *img);
 t_vector	**create_gridv(int width, int height, float_t step);
-int			**create_gridc(int width, int height);
+t_rgb		**create_gridc(int width, int height);
+t_rgb		get_gradient(t_rgb c1, t_rgb c2, float_t dist);
 void		scene_draw(t_scene *scene);
 void		obj_rotate(t_obj *obj, t_vector axis, float_t a);
 void		obj_translate(t_obj *obj, t_vector axis, float_t val);

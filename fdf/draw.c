@@ -6,21 +6,23 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/30 20:31:24 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/30 22:12:03 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	draw_point(t_vector *p, t_img *img)
+void	draw_point(t_vector *p, t_rgb color, t_img *img)
 {
 	t_vector	coords;
-	float_t		z_warp;
+	// float_t		z_warp;
 
-	z_warp = (p->z + ((float_t) 434 / 2)) / (1000 + 434);
+	// z_warp = (p->z + ((float_t) 434 / 2)) / (1000 + 434);
 	v_assign(&coords, *p, 1);
 	v_planeproj(&coords, (t_vector){0, 0, 1}, 1);
-	img_pixel_put(img, coords.x, coords.y, get_color_from_warp(z_warp));
+	// img_pixel_put(img, coords.x, coords.y, get_color_from_warp(z_warp));
+	// img_pixel_put(img, coords.x, coords.y, ctoi(color)|0xFFFFFFFF);
+	img_pixel_put(img, coords.x, coords.y, ctoi(color)|0xFF000000);
 }
 
 int	get_color_from_warp(float_t z_warp)
@@ -35,16 +37,20 @@ int	get_color_from_warp(float_t z_warp)
 	return (0x00000000 | (r << (2 * 8)) | (g << (1 * 8)) | b);
 }
 
-void	connect_vertices(t_vector *v1, t_vector *v2, t_img *img)
+void	connect_vertices(t_vector *v1, t_vector *v2, t_rgb c1, t_rgb c2, t_img *img)
 {
 	float_t		dist;
 	t_vector	step;
 	t_vector	point;
+	t_rgb		gradient;
 
+	(void) c1;
+	(void) c2;
 	point.x = v1->x;
 	point.y = v1->y;
 	point.z = v1->z;
 	dist = v_distance(v1, v2);
+	gradient = get_gradient(c1, c2, dist);
 	step.x = -((v1->x - v2->x) / dist);
 	step.y = -((v1->y - v2->y) / dist);
 	step.z = -((v1->z - v2->z) / dist);
@@ -53,8 +59,21 @@ void	connect_vertices(t_vector *v1, t_vector *v2, t_img *img)
 		point.x += step.x;
 		point.y += step.y;
 		point.z += step.z;
-		draw_point(&point, img);
+		c1.r += gradient.r;
+		c1.g += gradient.g;
+		c1.b += gradient.b;
+		draw_point(&point, c1, img);
 	}
+}
+
+t_rgb	get_gradient(t_rgb c1, t_rgb c2, float_t dist)
+{
+	t_rgb	grad;
+
+	grad.r = -((c1.r - c2.r) / dist);
+	grad.g = -((c1.g - c2.g) / dist);
+	grad.b = -((c1.b - c2.b) / dist);
+	return (grad);
 }
 
 t_vector	**create_gridv(int width, int height, float_t step)
@@ -87,9 +106,9 @@ t_vector	**create_gridv(int width, int height, float_t step)
 	return (grid);
 }
 
-int	**create_gridc(int width, int height)
+t_rgb	**create_gridc(int width, int height)
 {
-	int	**grid;
+	t_rgb	**grid;
 	int	i;
 
 	grid = ft_calloc(width, sizeof(int *));
@@ -155,7 +174,7 @@ void	scene_draw(t_scene *scene)
 				if (node[1].z > cam->dist && node[0].z > cam->dist)
 				{
 					v_sum(&node[1], &obj->origin, 1);
-					connect_vertices(&node[1], &node[0], obj->img);
+					connect_vertices(&node[1], &node[0], obj->grid->c[i - 1][j], obj->grid->c[i][j], obj->img);
 				}
 			}
 			if (j > 0)
@@ -167,7 +186,7 @@ void	scene_draw(t_scene *scene)
 				if (node[1].z > cam->dist && node[0].z > cam->dist)
 				{
 					v_sum(&node[1], &obj->origin, 1);
-					connect_vertices(&node[1], &node[0], obj->img);
+					connect_vertices(&node[1], &node[0], obj->grid->c[i][j - 1], obj->grid->c[i][j], obj->img);
 				}
 			}
 			j++;

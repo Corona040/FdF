@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:36:54 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/30 20:28:42 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/31 02:15:59 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,30 +20,34 @@ int	main(int argc, char **argv)
 	if (argc == 2)
 	{
 		map = read_map_file(argv[1]);
-		scene = init_scene_from_map(map);
+		init_scene_from_map(&scene, map);
 		isometric_ize(&scene);
 		hook_n_loop(&scene);
 	}
 }
 
-t_scene	init_scene_from_map(t_map map)
+//free these mallocs FREE THEM!!
+void	init_scene_from_map(t_scene *scene, t_map map)
 {
-	t_win	win;
+	t_win	*win;
 	t_grid	*grid;
-	t_obj	obj;
 	t_img	*img;
-	t_cam	cam;
+	t_obj	*obj;
+	t_cam	*cam;
 
-	win.mlx_ptr = mlx_init();
-	win.win_ptr = mlx_new_window(win.mlx_ptr, WIN_X, WIN_Y, "FdF by ecorona-");
+	win = ft_calloc(1, sizeof(t_win));
+	win->mlx_ptr = mlx_init();
+	win->win_ptr = mlx_new_window(win->mlx_ptr, WIN_X, WIN_Y, "FdF by ecorona-");
 	grid = get_grid_from_map(map);
-	img = create_img(win.mlx_ptr, IMG_X, IMG_Y, NULL);
+	img = create_img(win->mlx_ptr, IMG_X, IMG_Y, NULL);
 	img->x = (float_t)(WIN_X - IMG_X) / 2;
 	img->y = (float_t)(WIN_Y - IMG_Y) / 2;
-	obj = (t_obj){(t_vector){(float_t)IMG_X / 2, (float_t)IMG_Y / 2, 0}, \
-		map.x, map.y, grid, img, &win};
-	cam = (t_cam){(t_vector){0, 0, CAM_POS}, FOV};
-	return ((t_scene){&obj, &cam, (t_vector){0, 0, 0}, 0});
+	obj = ft_calloc(1, sizeof(t_obj));
+	*obj = (t_obj){(t_vector){(float_t)IMG_X / 2, (float_t)IMG_Y / 2, 0}, \
+		map.x, map.y, grid, img, win};
+	cam = ft_calloc(1, sizeof(t_cam));
+	*cam = (t_cam){(t_vector){0, 0, CAM_POS}, FOV};
+	*scene = (t_scene){obj, cam, (t_vector){0, 0, 0}, 0};
 }
 
 void	isometric_ize(t_scene *scene)
