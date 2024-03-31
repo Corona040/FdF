@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/31 23:02:32 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/01 00:16:13 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -348,6 +348,7 @@ int	quit(void *param)
 	mlx_loop_end(win->mlx_ptr);
 	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);
 	mlx_destroy_window(win->mlx_ptr, win->win_ptr);
+	mlx_destroy_display(win->mlx_ptr);
 	free(win->mlx_ptr);
 	free_scene(scene);
 	exit(EXIT_SUCCESS);
