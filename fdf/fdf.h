@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/31 02:06:21 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/31 16:54:35 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_rgb
 
 typedef struct s_grid
 {
+	int			xy[2];
 	t_vector	**v;
 	t_rgb		**c;
 }	t_grid;
@@ -105,6 +106,12 @@ typedef struct s_scene
 	int			perspective;
 }	t_scene;
 
+/* ************************************************************************** */
+// free_.c
+void	free_matrix(void **m, int n);
+void	free_obj(t_obj *obj);
+void	free_scene(t_scene *scene);
+void	free_map(t_map *map);
 /* ************************************************************************** */
 // fdf.c
 void		init_scene_from_map(t_scene *scene, t_map map);

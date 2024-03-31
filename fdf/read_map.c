@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 19:49:01 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/31 00:49:16 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/31 17:48:58 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,8 @@ t_map	read_map_file(char *path)
 			free(line);
 			if (map_append(&map, z_val) == -1)
 			{
-				//free(NULL);
-				//exit
-				(void)map;
+				free_map(&map);
+				exit(EXIT_FAILURE);
 			}
 			map.y++;
 			line = get_next_line(fd);
@@ -111,6 +110,9 @@ t_grid	*get_grid_from_map(t_map map)
 		}
 		i++;
 	}
+	grid->xy[0] = map.x;
+	grid->xy[1] = map.y;
+	free_map(&map);
 	return (grid);
 }
 

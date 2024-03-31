@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/30 22:12:03 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/03/31 17:44:49 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,6 +233,7 @@ int	animate(void *param)
 	img->x = scene->obj->img->x;
 	img->y = scene->obj->img->y;
 	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);
+	free(scene->obj->img);
 	scene->obj->img = img;
 	mlx_clear_window(win->mlx_ptr, win->win_ptr);
 	scene_draw(scene);
@@ -252,12 +253,12 @@ int	scene_rot(void *param)
 	int			mouse_pos[2];
 
 	scene = (t_scene *)param;
-	img = scene->obj->img;
 	win = scene->obj->win;
 	img = create_img(win->mlx_ptr, IMG_X, IMG_Y, NULL);
 	img->x = scene->obj->img->x;
 	img->y = scene->obj->img->y;
 	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);
+	free(scene->obj->img);
 	scene->obj->img = img;
 	mlx_mouse_get_pos(win->mlx_ptr, win->win_ptr, mouse_pos, mouse_pos + 1);
 	v = (t_vector){mouse_pos[0], mouse_pos[1], 0};
@@ -280,12 +281,12 @@ int	scene_shift(void *param)
 	int			mouse_pos[2];
 
 	scene = (t_scene *)param;
-	img = scene->obj->img;
 	win = scene->obj->win;
 	img = create_img(win->mlx_ptr, IMG_X, IMG_Y, NULL);
 	img->x = scene->obj->img->x;
 	img->y = scene->obj->img->y;
 	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);
+	free(scene->obj->img);
 	scene->obj->img = img;
 	mlx_mouse_get_pos(win->mlx_ptr, win->win_ptr, mouse_pos, mouse_pos + 1);
 	v = (t_vector){mouse_pos[0], mouse_pos[1], 0};
@@ -347,6 +348,7 @@ int	quit(void *param)
 	mlx_loop_end(win->mlx_ptr);
 	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);
 	mlx_destroy_window(win->mlx_ptr, win->win_ptr);
+	free_scene(scene);
 	exit(EXIT_SUCCESS);
 }
 
