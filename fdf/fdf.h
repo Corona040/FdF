@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/01 13:32:02 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/01 16:12:03 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@
 # define XK_P 0x0070
 # define WIN_X 1000
 # define WIN_Y 1000
-# define GRID_STEP 100
-# define Z_FACTOR 5
+# define GRID_STEP 10
+# define Z_FACTOR GRID_STEP/10
 # define IMG_X 1000
 # define IMG_Y 1000
 # define CAM_POS 500
-# define FOV 100
+# define FOV 50
 # define ZOOM_FACTOR 100
-# define MOVE_FACTOR	1
+# define MOVE_FACTOR 1
 # define ROT_FACTOR .01
 # define ZOOM 10
 
