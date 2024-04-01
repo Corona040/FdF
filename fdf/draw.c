@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/01 00:16:13 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:31:26 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	draw_point(t_vector *p, t_rgb color, t_img *img)
 	v_planeproj(&coords, (t_vector){0, 0, 1}, 1);
 	// img_pixel_put(img, coords.x, coords.y, get_color_from_warp(z_warp));
 	// img_pixel_put(img, coords.x, coords.y, ctoi(color)|0xFFFFFFFF);
-	img_pixel_put(img, coords.x, coords.y, ctoi(color)|0xFF000000);
+	img_pixel_put(img, coords.x, coords.y, ctoi(color) | 0xFF000000);
 }
 
 int	get_color_from_warp(float_t z_warp)
@@ -109,7 +109,7 @@ t_vector	**create_gridv(int width, int height, float_t step)
 t_rgb	**create_gridc(int width, int height)
 {
 	t_rgb	**grid;
-	int	i;
+	int		i;
 
 	grid = ft_calloc(width, sizeof(int *));
 	if (!grid)

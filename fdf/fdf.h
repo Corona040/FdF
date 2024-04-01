@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/31 16:54:35 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/01 13:32:02 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@
 # define XK_P 0x0070
 # define WIN_X 1000
 # define WIN_Y 1000
-# define GRID_STEP 20
+# define GRID_STEP 100
 # define Z_FACTOR 5
 # define IMG_X 1000
 # define IMG_Y 1000
 # define CAM_POS 500
 # define FOV 100
-# define ZOOM_FACTOR 25
+# define ZOOM_FACTOR 100
 # define MOVE_FACTOR	1
 # define ROT_FACTOR .01
 # define ZOOM 10
@@ -108,10 +108,10 @@ typedef struct s_scene
 
 /* ************************************************************************** */
 // free_.c
-void	free_matrix(void **m, int n);
-void	free_obj(t_obj *obj);
-void	free_scene(t_scene *scene);
-void	free_map(t_map *map);
+void		free_matrix(void **m, int n);
+void		free_obj(t_obj *obj);
+void		free_scene(t_scene *scene);
+void		free_map(t_map *map);
 /* ************************************************************************** */
 // fdf.c
 void		init_scene_from_map(t_scene *scene, t_map map);
