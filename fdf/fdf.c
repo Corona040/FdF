@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:36:54 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/01 13:24:35 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/01 17:02:14 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	init_scene_from_map(t_scene *scene, t_map map)
 	*obj = (t_obj){(t_vector){(float_t)IMG_X / 2, (float_t)IMG_Y / 2, 0}, \
 		map.x, map.y, grid, img, win};
 	cam = ft_calloc(1, sizeof(t_cam));
-	*cam = (t_cam){(t_vector){0, 0, CAM_POS}, FOV};
+	*cam = (t_cam){(t_vector){0, 0, CAM_POS}, FOV, ZOOM_FACTOR};
 	*scene = (t_scene){obj, cam, (t_vector){0, 0, 0}, 0};
 }
 

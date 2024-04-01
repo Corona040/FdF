@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/01 13:31:26 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/01 17:04:30 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,9 +317,9 @@ int	mouse_press_hook(int button, int x, int y, void *param)
 		mlx_loop_hook(win->mlx_ptr, scene_shift, param);
 	}
 	else if (button == 4 && scene->perspective)
-		scene->cam->origin.z -= ZOOM_FACTOR;
+		scene->cam->origin.z -= scene->cam->zoom_factor;
 	else if (button == 5 && scene->perspective)
-		scene->cam->origin.z += ZOOM_FACTOR;
+		scene->cam->origin.z += scene->cam->zoom_factor;
 	return (0);
 }
 
@@ -363,5 +363,17 @@ int	key_hook(int keycode, void *param)
 		quit(param);
 	if (keycode == XK_P)
 		scene->perspective = (scene->perspective + 1) % 2;
+	if (keycode == XK_UP && scene->cam->dist < (float_t)FOV * 10)
+	{
+		scene->cam->dist *= 10;
+		scene->cam->origin.z *= 10;
+		scene->cam->zoom_factor *= 10;
+	}
+	if (keycode == XK_DOWN && scene->cam->dist > (float_t)FOV / 100)
+	{
+		scene->cam->dist /= 10;
+		scene->cam->origin.z /= 10;
+		scene->cam->zoom_factor /= 10;
+	}
 	return (0);
 }

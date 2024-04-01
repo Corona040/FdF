@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/01 16:12:03 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/01 17:02:04 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 
 # define XK_ESCAPE 0xff1b
 # define XK_P 0x0070
+# define XK_UP 0xff52
+# define XK_DOWN 0xff54
 # define WIN_X 1000
 # define WIN_Y 1000
 # define GRID_STEP 10
@@ -31,11 +33,11 @@
 # define IMG_X 1000
 # define IMG_Y 1000
 # define CAM_POS 500
-# define FOV 50
+# define FOV CAM_POS/10
 # define ZOOM_FACTOR 100
 # define MOVE_FACTOR 1
 # define ROT_FACTOR .01
-# define ZOOM 10
+# define ZOOM FOV/5
 
 typedef struct s_rgb
 {
@@ -96,6 +98,7 @@ typedef struct s_camera
 {
 	t_vector	origin;
 	float_t		dist;
+	float_t		zoom_factor;
 }	t_cam;
 
 typedef struct s_scene
