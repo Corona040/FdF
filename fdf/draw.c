@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/01 17:04:30 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/02 20:04:32 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -369,7 +369,7 @@ int	key_hook(int keycode, void *param)
 		scene->cam->origin.z *= 10;
 		scene->cam->zoom_factor *= 10;
 	}
-	if (keycode == XK_DOWN && scene->cam->dist > (float_t)FOV / 100)
+	if (keycode == XK_DOWN && scene->cam->dist > (float_t)FOV / 10)
 	{
 		scene->cam->dist /= 10;
 		scene->cam->origin.z /= 10;
