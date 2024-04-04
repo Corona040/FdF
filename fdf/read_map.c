@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 19:49:01 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/04 10:58:43 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:02:09 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,13 @@ t_grid	*get_grid_from_map(t_map map)
 
 	grid = ft_calloc(1, sizeof(*grid));
 	if (!grid)
-		exit(EXIT_FAILURE);
+		return (NULL);
 	grid->v = create_gridv(map.x, map.y, GRID_STEP);
+	if (!grid->v)
+		return (NULL);
 	grid->c = create_gridc(map.x, map.y);
+	if (!grid->c)
+		return (NULL);
 	i = 0;
 	while (i < map.y)
 	{

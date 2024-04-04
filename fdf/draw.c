@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/04 10:49:30 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:42:47 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	draw_point(t_vector *p, t_rgb color, t_img *img)
 	t_vector	coords;
 
 	v_assign(&coords, *p, 1);
-	v_planeproj(&coords, (t_vector){0, 0, 1}, 1);
+	if (!v_planeproj(&coords, (t_vector){0, 0, 1}, 1))
+		exit(EXIT_FAILURE);
 	img_pixel_put(img, coords.x, coords.y, ctoi(color) | 0xFF000000);
 }
 
@@ -202,7 +203,8 @@ void	obj_rotate(t_obj *obj, t_vector axis, float_t a)
 			j = 0;
 			while (j < obj->height)
 			{
-				v_rotate(&obj->grid->v[i][j++], axis, a, 1);
+				if (!v_rotate(&obj->grid->v[i][j++], axis, a, 1))
+					exit(EXIT_FAILURE);
 			}
 			i++;
 		}
@@ -212,7 +214,8 @@ void	obj_rotate(t_obj *obj, t_vector axis, float_t a)
 void	obj_translate(t_obj *obj, t_vector axis, float_t val)
 {
 	if (v_module(&axis) != 0)
-		v_shift(&(obj->origin), axis, val, 1);
+		if (!v_shift(&(obj->origin), axis, val, 1))
+			exit(EXIT_FAILURE);
 }
 
 int	animate(void *param)
@@ -224,6 +227,8 @@ int	animate(void *param)
 	scene = (t_scene *)param;
 	win = scene->obj->win;
 	img = create_img(win->mlx_ptr, IMG_X, IMG_Y, NULL);
+	if (!img)
+		exit(EXIT_FAILURE);
 	img->x = scene->obj->img->x;
 	img->y = scene->obj->img->y;
 	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);
@@ -249,6 +254,8 @@ int	scene_rot(void *param)
 	scene = (t_scene *)param;
 	win = scene->obj->win;
 	img = create_img(win->mlx_ptr, IMG_X, IMG_Y, NULL);
+	if (!img)
+		exit(EXIT_FAILURE);
 	img->x = scene->obj->img->x;
 	img->y = scene->obj->img->y;
 	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);
@@ -277,6 +284,8 @@ int	scene_shift(void *param)
 	scene = (t_scene *)param;
 	win = scene->obj->win;
 	img = create_img(win->mlx_ptr, IMG_X, IMG_Y, NULL);
+	if (!img)
+		exit(EXIT_FAILURE);
 	img->x = scene->obj->img->x;
 	img->y = scene->obj->img->y;
 	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);

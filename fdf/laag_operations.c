@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:00:16 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/04 10:56:07 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:36:43 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ t_vector	*v_proj(t_vector *a, t_vector *b, int inplace)
 	k = v_module(b);
 	k = v_dot_product(a, b) / (k * k);
 	aux = v_scalar_product(k, b, 0);
+	if (!aux)
+		return (NULL);
 	v_assign(result, *aux, 1);
 	free(aux);
 	return (result);
@@ -48,6 +50,8 @@ t_vector	*v_planeproj(t_vector *u, t_vector axis, int inplace)
 			return (NULL);
 	}
 	proj = v_proj(u, &axis, 0);
+	if (!proj)
+		return (NULL);
 	v_assign(result, *u, 1);
 	result->x -= proj->x;
 	result->y -= proj->y;
@@ -65,6 +69,8 @@ t_vector	*v_rotate(t_vector *u, t_vector axis, float_t a, int inplace)
 	t_vector		*ax;
 
 	ax = v_norm(&axis, 0);
+	if (!ax)
+		return (NULL);
 	if (inplace)
 		result = u;
 	else
@@ -99,6 +105,8 @@ t_vector	*v_shift(t_vector *u, t_vector axis, float_t val, int inplace)
 			return (NULL);
 	}
 	ax = v_norm(&axis, 0);
+	if (!ax)
+		return (NULL);
 	v_scalar_product(val, ax, 1);
 	result = v_sum(u, ax, inplace);
 	free(ax);

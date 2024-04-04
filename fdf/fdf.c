@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:36:54 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/04 10:50:53 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/04 18:29:53 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,11 @@ void	init_scene_from_map(t_scene *scene, t_map map)
 	win->mlx_ptr = mlx_init();
 	win->win_ptr = mlx_new_window(win->mlx_ptr, WIN_X, WIN_Y, "FdF by ecorona");
 	grid = get_grid_from_map(map);
+	if (!grid)
+		exit(EXIT_FAILURE);
 	img = create_img(win->mlx_ptr, IMG_X, IMG_Y, NULL);
+	if (!img)
+		exit(EXIT_FAILURE);
 	img->x = (float_t)(WIN_X - IMG_X) / 2;
 	img->y = (float_t)(WIN_Y - IMG_Y) / 2;
 	obj = ft_calloc(1, sizeof(t_obj));

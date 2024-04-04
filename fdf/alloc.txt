@@ -1,7 +1,7 @@
 draw.c
 	create_gridv -> return null
 	create_gridc -> return null
-	add_perspective -> return null
+	add_perspective -> return null (if not inplace) -> always inplace :)
 fdf.c
 	init_scene_from_map -> exit
 image.c
@@ -9,6 +9,18 @@ image.c
 read_map.c
 	map_append -> return -1
 	get_grid_from_map -> exit
+
+		create_gridv and create_gridc
+			get_grid_from_map -> return null
+		get_grid_from_map
+			fdf.c: init_scene_from_map -> exit
+		create_img
+			draw.c: animate -> exit
+			draw.c: scene_rot -> exit
+			draw.c: scene_shift -> exit
+			fdf.c: init_scene_from_map -> exit
+		map_append
+			read_map_file -> exit
 
 laag_basic.c
 	v_assing -> return null (if not inplace)
@@ -26,3 +38,24 @@ laag_quaternion.c
 	q_conjugate -> return null (if not inplace)
 	q_scalar_product -> return null (if not inplace)
 	q_product -> return null AAAAAAAAAAA
+
+		laag_operations.c:	aux = v_scalar_product(k, b, 0);
+		laag_operations.c:	proj = v_proj(u, &axis, 0);
+		laag_operations.c:	ax = v_norm(&axis, 0);
+		laag_operations.c:	ax = v_norm(&axis, 0);
+		
+		v_scalar_product
+			v_proj -> return null
+		v_proj
+			v_planeproj -> return null
+		v_norm
+			v_rotate -> return null
+			v_shift -> return null
+
+
+			v_planeproj
+				draw_point -> exit
+			v_rotate
+				obj_rotate -> exit
+			v_shift
+				obj_shift -> exit
