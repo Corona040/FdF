@@ -6,13 +6,12 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 19:49:01 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/04 10:42:59 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/04 10:46:35 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-// line and z_val have allocs -> need free
 t_map	read_map_file(char *path)
 {
 	t_map	map;

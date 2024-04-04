@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:36:54 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/01 17:02:14 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/04 10:45:20 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	main(int argc, char **argv)
 	}
 }
 
-//free these mallocs FREE THEM!!
 void	init_scene_from_map(t_scene *scene, t_map map)
 {
 	t_win	*win;

@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/02 20:04:32 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/04 10:44:58 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,23 @@
 void	draw_point(t_vector *p, t_rgb color, t_img *img)
 {
 	t_vector	coords;
-	// float_t		z_warp;
 
-	// z_warp = (p->z + ((float_t) 434 / 2)) / (1000 + 434);
 	v_assign(&coords, *p, 1);
 	v_planeproj(&coords, (t_vector){0, 0, 1}, 1);
-	// img_pixel_put(img, coords.x, coords.y, get_color_from_warp(z_warp));
-	// img_pixel_put(img, coords.x, coords.y, ctoi(color)|0xFFFFFFFF);
 	img_pixel_put(img, coords.x, coords.y, ctoi(color) | 0xFF000000);
 }
 
-int	get_color_from_warp(float_t z_warp)
-{
-	int	r;
-	int	g;
-	int	b;
-
-	r = -0xff * z_warp;
-	g = 0x11 + (0x11 * z_warp) / 2;
-	b = 0x44 + (0x11 * z_warp) / 2;
-	return (0x00000000 | (r << (2 * 8)) | (g << (1 * 8)) | b);
-}
+// int	get_color_from_warp(float_t z_warp)
+// {
+// 	int	r;
+// 	int	g;
+// 	int	b;
+//
+// 	r = -0xff * z_warp;
+// 	g = 0x11 + (0x11 * z_warp) / 2;
+// 	b = 0x44 + (0x11 * z_warp) / 2;
+// 	return (0x00000000 | (r << (2 * 8)) | (g << (1 * 8)) | b);
+// }
 
 void	connect_vertices(t_vector *v1, t_vector *v2, t_rgb c1, t_rgb c2, t_img *img)
 {
@@ -142,8 +138,6 @@ t_vector	*add_perspective(t_vector *node, t_scene *scene, int inplace)
 	return (result);
 }
 
-// should only draw node with inferior z if x and y are superior
-// ^^ womp womp wouldn't work 😂
 void	scene_draw(t_scene *scene)
 {
 	int			i;
