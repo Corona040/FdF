@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 19:49:01 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/01 13:26:14 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/04 10:42:59 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ t_map	read_map_file(char *path)
 			}
 			map.y++;
 			line = get_next_line(fd);
-			map.x = 0;
-			while (z_val[map.x])
-				map.x++;
 		}
+		map.x = 0;
+		while (z_val[map.x])
+			map.x++;
 	}
 	else
 	{
