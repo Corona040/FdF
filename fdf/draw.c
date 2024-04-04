@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/04 10:44:58 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/04 10:49:30 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,13 @@ t_vector	**create_gridv(int width, int height, float_t step)
 
 	grid = ft_calloc(width, sizeof(t_vector *));
 	if (!grid)
-		return (0);
+		return (NULL);
 	i = 0;
 	while (i < width)
 	{
 		grid[i] = ft_calloc(height, sizeof(**grid));
 		if (!grid[i++])
-			return (0);
+			return (NULL);
 	}
 	i = 0;
 	while (i < width)
@@ -109,13 +109,13 @@ t_rgb	**create_gridc(int width, int height)
 
 	grid = ft_calloc(width, sizeof(int *));
 	if (!grid)
-		return (0);
+		return (NULL);
 	i = 0;
 	while (i < width)
 	{
 		grid[i] = ft_calloc(height, sizeof(**grid));
 		if (!grid[i++])
-			return (0);
+			return (NULL);
 	}
 	return (grid);
 }

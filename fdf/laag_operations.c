@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:00:16 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/03 23:34:52 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/04 10:56:07 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_vector	*v_proj(t_vector *a, t_vector *b, int inplace)
 	{
 		result = ft_calloc(1, sizeof(*result));
 		if (!result)
-			return (0);
+			return (NULL);
 	}
 	k = v_module(b);
 	k = v_dot_product(a, b) / (k * k);
@@ -45,7 +45,7 @@ t_vector	*v_planeproj(t_vector *u, t_vector axis, int inplace)
 	{
 		result = ft_calloc(1, sizeof(*result));
 		if (!result)
-			return (0);
+			return (NULL);
 	}
 	proj = v_proj(u, &axis, 0);
 	v_assign(result, *u, 1);
@@ -71,7 +71,7 @@ t_vector	*v_rotate(t_vector *u, t_vector axis, float_t a, int inplace)
 	{
 		result = ft_calloc(1, sizeof(*result));
 		if (!result)
-			return (0);
+			return (NULL);
 	}
 	uq = (t_quaternion){0, u->x, u->y, u->z};
 	q = (t_quaternion){cosf(a / 2), sinf(a / 2) * ax->x, \
@@ -96,7 +96,7 @@ t_vector	*v_shift(t_vector *u, t_vector axis, float_t val, int inplace)
 	{
 		result = ft_calloc(1, sizeof(*result));
 		if (!result)
-			return (0);
+			return (NULL);
 	}
 	ax = v_norm(&axis, 0);
 	v_scalar_product(val, ax, 1);

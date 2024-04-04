@@ -1,0 +1,28 @@
+draw.c
+	create_gridv -> return null
+	create_gridc -> return null
+	add_perspective -> return null
+fdf.c
+	init_scene_from_map -> exit
+image.c
+	create_img -> return null
+read_map.c
+	map_append -> return -1
+	get_grid_from_map -> exit
+
+laag_basic.c
+	v_assing -> return null (if not inplace)
+	v_sum -> return null (if not inplace)
+	v_norm -> return null (if not inplace)
+laag_operations.c
+	v_proj -> return null (if not inplace)
+	v_planeproj -> return null (if not inplace)
+	v_rotate -> return null (if not inplace)
+	v_shift -> return null (if not inplace)
+laag_product.c
+	v_scalar_product -> return null (if not inplace)
+	v_vector_product -> return null AAAAAAAAAAA
+laag_quaternion.c
+	q_conjugate -> return null (if not inplace)
+	q_scalar_product -> return null (if not inplace)
+	q_product -> return null AAAAAAAAAAA

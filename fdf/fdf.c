@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 14:36:54 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/04 10:45:20 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/04 10:50:53 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	init_scene_from_map(t_scene *scene, t_map map)
 	t_cam	*cam;
 
 	win = ft_calloc(1, sizeof(t_win));
+	if (!win)
+		exit(EXIT_FAILURE);
 	win->mlx_ptr = mlx_init();
 	win->win_ptr = mlx_new_window(win->mlx_ptr, WIN_X, WIN_Y, "FdF by ecorona");
 	grid = get_grid_from_map(map);
@@ -42,9 +44,13 @@ void	init_scene_from_map(t_scene *scene, t_map map)
 	img->x = (float_t)(WIN_X - IMG_X) / 2;
 	img->y = (float_t)(WIN_Y - IMG_Y) / 2;
 	obj = ft_calloc(1, sizeof(t_obj));
+	if (!obj)
+		exit(EXIT_FAILURE);
 	*obj = (t_obj){(t_vector){(float_t)IMG_X / 2, (float_t)IMG_Y / 2, 0}, \
 		map.x, map.y, grid, img, win};
 	cam = ft_calloc(1, sizeof(t_cam));
+	if (!cam)
+		exit(EXIT_FAILURE);
 	*cam = (t_cam){(t_vector){0, 0, CAM_POS}, FOV, ZOOM_FACTOR};
 	*scene = (t_scene){obj, cam, (t_vector){0, 0, 0}, 0};
 }

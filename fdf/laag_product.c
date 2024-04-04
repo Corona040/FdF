@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:20:09 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/03 21:26:26 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/04 10:56:55 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_vector	*v_scalar_product(float_t a, t_vector *u, int inplace)
 	{
 		result = ft_calloc(1, sizeof(*result));
 		if (!result)
-			return (0);
+			return (NULL);
 	}
 	result->x = a * u->x;
 	result->y = a * u->y;
@@ -47,7 +47,7 @@ t_vector	*v_vector_product(t_vector *u, t_vector *v)
 
 	result = ft_calloc(1, sizeof(*result));
 	if (!result)
-		return (0);
+		return (NULL);
 	result->x = (u->y * v->z) - (u->z * v->y);
 	result->y = (u->z * v->x) - (u->x * v->z);
 	result->z = (u->x * v->y) - (u->y * v->x);

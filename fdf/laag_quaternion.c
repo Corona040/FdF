@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 23:05:09 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/02/03 21:32:16 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/04 11:00:03 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_quaternion	*q_conjugate(t_quaternion *q, int inplace)
 	{
 		result = ft_calloc(1, sizeof(*result));
 		if (!result)
-			return (0);
+			return (NULL);
 	}
 	result->w = q->w;
 	result->i = -(q->i);
@@ -53,7 +53,7 @@ t_quaternion	*q_scalar_product(float_t a, t_quaternion *q, int inplace)
 	{
 		result = ft_calloc(1, sizeof(*result));
 		if (!result)
-			return (0);
+			return (NULL);
 	}
 	result->w = a * q->w;
 	result->i = a * q->i;
@@ -92,7 +92,7 @@ t_quaternion	*q_product(t_quaternion *q, t_quaternion *p, int inplace)
 	result = ft_calloc(1, sizeof(*result));
 	uv = v_vector_product(&u, &v);
 	if (!result || !uv)
-		return (0);
+		return (NULL);
 	result->w = (q->w * p->w) - v_dot_product(&u, &v);
 	v_scalar_product(q->w, &v, 1);
 	v_sum(v_sum(uv, v_scalar_product(p->w, &u, 1), 1), &v, 1);

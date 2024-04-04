@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 21:19:30 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/27 20:19:48 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/04 10:52:56 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_vector	*v_assign(t_vector *u, t_vector v, int inplace)
 	{
 		result = ft_calloc(1, sizeof(*result));
 		if (!result)
-			return (0);
+			return (NULL);
 	}
 	result->x = v.x;
 	result->y = v.y;
@@ -40,7 +40,7 @@ t_vector	*v_sum(t_vector *u, t_vector *v, int inplace)
 	{
 		result = ft_calloc(1, sizeof(*result));
 		if (!result)
-			return (0);
+			return (NULL);
 	}
 	result->x = u->x + v->x;
 	result->y = u->y + v->y;
@@ -74,7 +74,7 @@ t_vector	*v_norm(t_vector *u, int inplace)
 	{
 		result = ft_calloc(1, sizeof(*result));
 		if (!result)
-			return (0);
+			return (NULL);
 	}
 	module = v_module(u);
 	result->x = u->x / module;
