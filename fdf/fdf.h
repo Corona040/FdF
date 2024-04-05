@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/05 08:47:34 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/05 09:14:45 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 # define MOVE_FACTOR 1
 # define ROT_FACTOR .01
 # define ZOOM FOV/5
-
 
 typedef struct s_rgb
 {

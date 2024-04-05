@@ -1,6 +1,14 @@
 NAME = fdf
 
-SRCS = draw.c image.c read_map.c free_.c fdf.c
+SRCS =	fdf.c					\
+		read_map.c				\
+		read_map_utils.c		\
+		create_grid.c			\
+		image.c					\
+		draw.c					\
+		shift_n_rotate.c		\
+		hooks.c					\
+		free_.c
 
 laag_SRCS =	laag_basic.c		\
 			laag_operations.c	\

@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 15:00:16 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/05 08:39:38 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/05 09:07:06 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,12 @@ t_vector	*v_rotate(t_vector *u, t_vector axis, float_t a, int inplace)
 	t_vector		*ax;
 
 	ax = v_norm(&axis, 0);
-	if (!ax)
-		return (NULL);
-	if (inplace)
+	if (ax && inplace)
 		result = u;
 	else
 	{
 		result = ft_calloc(1, sizeof(*result));
-		if (!result)
+		if (!result || !ax)
 			return (NULL);
 	}
 	uq = (t_quaternion){0, u->x, u->y, u->z};
