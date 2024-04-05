@@ -6,11 +6,25 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 17:35:52 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/04 10:45:39 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/05 11:03:50 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+t_img	*new_image(t_win *win, t_img *old)
+{
+	t_img	*img;
+
+	img = create_img(win->mlx_ptr, IMG_X, IMG_Y, NULL);
+	if (!img)
+		exit(EXIT_FAILURE);
+	img->x = old->x;
+	img->y = old->y;
+	mlx_destroy_image(win->mlx_ptr, old->img_ptr);
+	free(old);
+	return (img);
+}
 
 t_img	*create_img(void *mlx_ptr, int width, int height, t_img_conf *conf)
 {

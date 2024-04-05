@@ -6,11 +6,61 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 09:08:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/05 09:08:52 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/05 10:51:12 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void	file_to_map(t_map *map, int fd)
+{
+	char	**z_val;
+	char	*line;
+
+	map->y = 0;
+	line = get_next_line(fd);
+	while (line)
+	{
+		z_val = ft_split(line, ' ');
+		free(line);
+		if (map_append(map, z_val) == -1)
+		{
+			free_map(map);
+			exit(EXIT_FAILURE);
+		}
+		map->y++;
+		line = get_next_line(fd);
+	}
+	map->x = 0;
+	while (z_val[map->x])
+		map->x++;
+}
+
+void	grid_to_map(t_grid *grid, t_map *map)
+{
+	char	*aux;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < map->y)
+	{
+		j = 0;
+		while (map->vals[i][j])
+		{
+			aux = ft_strchr(map->vals[i][j], ',');
+			grid->c[map->x - j - 1][i] = itoc(0xFFFFFF);
+			if (aux)
+			{
+				*aux = '\0';
+				grid->c[map->x - j - 1][i] = itoc(xatoi(aux + 1));
+			}
+			grid->v[map->x - j - 1][i].y = -ft_atoi(map->vals[i][j]) * Z_FACTOR;
+			j++;
+		}
+		i++;
+	}
+}
 
 int	xatoi(char *hex)
 {

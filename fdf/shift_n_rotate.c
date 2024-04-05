@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 08:58:18 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/05 09:15:14 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/05 11:04:32 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,8 @@ int	scene_rot(void *param)
 
 	scene = (t_scene *)param;
 	win = scene->obj->win;
-	img = create_img(win->mlx_ptr, IMG_X, IMG_Y, NULL);
-	if (!img)
-		exit(EXIT_FAILURE);
-	img->x = scene->obj->img->x;
-	img->y = scene->obj->img->y;
-	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);
-	free(scene->obj->img);
-	scene->obj->img = img;
+	scene->obj->img = new_image(win, scene->obj->img);
+	img = scene->obj->img;
 	mlx_mouse_get_pos(win->mlx_ptr, win->win_ptr, mouse_pos, mouse_pos + 1);
 	v = (t_vector){mouse_pos[0], mouse_pos[1], 0};
 	obj_rotate(scene->obj, (t_vector){(mouse_pos[1] - scene->origin.y) * -1, \
@@ -80,14 +74,8 @@ int	scene_shift(void *param)
 
 	scene = (t_scene *)param;
 	win = scene->obj->win;
-	img = create_img(win->mlx_ptr, IMG_X, IMG_Y, NULL);
-	if (!img)
-		exit(EXIT_FAILURE);
-	img->x = scene->obj->img->x;
-	img->y = scene->obj->img->y;
-	mlx_destroy_image(win->mlx_ptr, scene->obj->img->img_ptr);
-	free(scene->obj->img);
-	scene->obj->img = img;
+	scene->obj->img = new_image(win, scene->obj->img);
+	img = scene->obj->img;
 	mlx_mouse_get_pos(win->mlx_ptr, win->win_ptr, mouse_pos, mouse_pos + 1);
 	v = (t_vector){mouse_pos[0], mouse_pos[1], 0};
 	img->x += (v.x - scene->origin.x) * MOVE_FACTOR;

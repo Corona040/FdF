@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/05 08:59:48 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/05 10:43:51 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,46 +94,22 @@ void	scene_draw(t_scene *scene)
 	int			i;
 	int			j;
 	t_vector	node[2];
-	t_obj		*obj;
-	t_cam		*cam;
 
-	cam = scene->cam;
-	obj = scene->obj;
 	i = 0;
-	while (i < obj->width)
+	while (i < scene->obj->width)
 	{
 		j = 0;
-		while (j < obj->height)
+		while (j < scene->obj->height)
 		{
-			v_assign(&node[0], obj->grid->v[i][j], 1);
-			v_sum(&node[0], &cam->origin, 1);
+			v_assign(&node[0], scene->obj->grid->v[i][j], 1);
+			v_sum(&node[0], &scene->cam->origin, 1);
 			if (scene->perspective)
 				add_perspective(&node[0], scene, 1);
-			v_sum(&node[0], &obj->origin, 1);
+			v_sum(&node[0], &scene->obj->origin, 1);
 			if (i > 0)
-			{
-				v_assign(&node[1], obj->grid->v[i - 1][j], 1);
-				v_sum(&node[1], &cam->origin, 1);
-				if (scene->perspective)
-					add_perspective(&node[1], scene, 1);
-				if (node[1].z > cam->dist && node[0].z > cam->dist)
-				{
-					v_sum(&node[1], &obj->origin, 1);
-					connect_vertices((t_arc){&node[1], &node[0], obj->grid->c[i - 1][j], obj->grid->c[i][j]}, obj->img);
-				}
-			}
+				draw_arcx(scene, node, i, j);
 			if (j > 0)
-			{
-				v_assign(&node[1], obj->grid->v[i][j - 1], 1);
-				v_sum(&node[1], &cam->origin, 1);
-				if (scene->perspective)
-					add_perspective(&node[1], scene, 1);
-				if (node[1].z > cam->dist && node[0].z > cam->dist)
-				{
-					v_sum(&node[1], &obj->origin, 1);
-					connect_vertices((t_arc){&node[1], &node[0], obj->grid->c[i][j - 1], obj->grid->c[i][j]}, obj->img);
-				}
-			}
+				draw_arcy(scene, node, i, j);
 			j++;
 		}
 		i++;

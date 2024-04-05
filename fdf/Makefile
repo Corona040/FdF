@@ -1,11 +1,13 @@
 NAME = fdf
 
 SRCS =	fdf.c					\
+		init_scenery.c			\
 		read_map.c				\
 		read_map_utils.c		\
 		create_grid.c			\
 		image.c					\
 		draw.c					\
+		draw_utils.c			\
 		shift_n_rotate.c		\
 		hooks.c					\
 		free_.c

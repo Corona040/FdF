@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/05 10:20:05 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/05 11:11:45 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,22 +130,33 @@ void		isometric_ize(t_scene *scene);
 void		parallel_ize(t_scene *scene);
 void		hook_n_loop(t_scene *scene);
 /* ************************************************************************** */
+// init_scenery.c
+t_win		*init_scene_win(void);
+t_img		*init_scene_img(t_win *win);
+/* ************************************************************************** */
 // read_map.c
 t_map		read_map_file(char *path);
 int			map_append(t_map *map, char **z_val);
 t_grid		*get_grid_from_map(t_map map);
 /* ************************************************************************** */
 // read_map_utils.c
+void		file_to_map(t_map *map, int fd);
+void		grid_to_map(t_grid *grid, t_map *map);
 int			xatoi(char *hex);
 t_rgb		itoc(int i);
 int			ctoi(t_rgb rgb);
 /* ************************************************************************** */
 // draw.c
 void		draw_point(t_vector *p, t_rgb color, t_img *img);
-int			get_color_from_warp(float_t z_warp);
+// int			get_color_from_warp(float_t z_warp);
 void		connect_vertices(t_arc arc, t_img *img);
 t_rgb		get_gradient(t_rgb c1, t_rgb c2, float_t dist);
+t_vector	*add_perspective(t_vector *node, t_scene *scene, int inplace);
 void		scene_draw(t_scene *scene);
+/* ************************************************************************** */
+// draw_utils.c
+void		draw_arcx(t_scene *scene, t_vector *node, int i, int j);
+void		draw_arcy(t_scene *scene, t_vector *node, int i, int j);
 /* ************************************************************************** */
 // crate_grid.c
 t_vector	**create_gridv(int width, int height, float_t step);
@@ -166,6 +177,7 @@ int			quit(void *param);
 int			key_hook(int keycode, void *param);
 /* ************************************************************************** */
 // image.c
+t_img		*new_image(t_win *win, t_img *old);
 t_img		*create_img(void *mlx_ptr, int width, int height, t_img_conf *conf);
 int			img_pixel_put(t_img *img, int x, int y, int color);
 
