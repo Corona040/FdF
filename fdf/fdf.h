@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/05 11:11:45 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:17:56 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,18 @@
 # define WIN_X 1000
 # define WIN_Y 1000
 # define GRID_STEP 10
-# define Z_FACTOR GRID_STEP/10
+// # define Z_FACTOR GRID_STEP/10
+# define Z_FACTOR 1
 # define IMG_X 1000
 # define IMG_Y 1000
 # define CAM_POS 500
-# define FOV CAM_POS/10
+// # define FOV CAM_POS/10
+# define FOV 50
 # define ZOOM_FACTOR 100
 # define MOVE_FACTOR 1
 # define ROT_FACTOR .01
-# define ZOOM FOV/5
+// # define ZOOM FOV/5
+# define ZOOM 10
 
 typedef struct s_rgb
 {
