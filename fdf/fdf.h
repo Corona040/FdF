@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/05 09:14:45 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/05 10:20:05 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,8 @@ void		hook_n_loop(t_scene *scene);
 t_map		read_map_file(char *path);
 int			map_append(t_map *map, char **z_val);
 t_grid		*get_grid_from_map(t_map map);
+/* ************************************************************************** */
+// read_map_utils.c
 int			xatoi(char *hex);
 t_rgb		itoc(int i);
 int			ctoi(t_rgb rgb);
@@ -142,15 +144,22 @@ int			ctoi(t_rgb rgb);
 void		draw_point(t_vector *p, t_rgb color, t_img *img);
 int			get_color_from_warp(float_t z_warp);
 void		connect_vertices(t_arc arc, t_img *img);
-t_vector	**create_gridv(int width, int height, float_t step);
-t_rgb		**create_gridc(int width, int height);
 t_rgb		get_gradient(t_rgb c1, t_rgb c2, float_t dist);
 void		scene_draw(t_scene *scene);
+/* ************************************************************************** */
+// crate_grid.c
+t_vector	**create_gridv(int width, int height, float_t step);
+t_vector	**step_gridv(t_vector **grid, int width, int height, float_t step);
+t_rgb		**create_gridc(int width, int height);
+/* ************************************************************************** */
+// shift_n_rotate.c
 void		obj_rotate(t_obj *obj, t_vector axis, float_t a);
 void		obj_translate(t_obj *obj, t_vector axis, float_t val);
-int			animate(void *param);
 int			scene_rot(void *param);
 int			scene_shift(void *param);
+/* ************************************************************************** */
+// hooks.c
+int			animate(void *param);
 int			mouse_press_hook(int button, int x, int y, void *param);
 int			mouse_release_hook(int button, int x, int y, void *param);
 int			quit(void *param);
