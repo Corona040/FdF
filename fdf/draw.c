@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 16:34:59 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/04 18:42:47 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/05 08:47:29 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,32 +34,30 @@ void	draw_point(t_vector *p, t_rgb color, t_img *img)
 // 	return (0x00000000 | (r << (2 * 8)) | (g << (1 * 8)) | b);
 // }
 
-void	connect_vertices(t_vector *v1, t_vector *v2, t_rgb c1, t_rgb c2, t_img *img)
+void	connect_vertices(t_arc arc, t_img *img)
 {
 	float_t		dist;
 	t_vector	step;
 	t_vector	point;
 	t_rgb		gradient;
 
-	(void) c1;
-	(void) c2;
-	point.x = v1->x;
-	point.y = v1->y;
-	point.z = v1->z;
-	dist = v_distance(v1, v2);
-	gradient = get_gradient(c1, c2, dist);
-	step.x = -((v1->x - v2->x) / dist);
-	step.y = -((v1->y - v2->y) / dist);
-	step.z = -((v1->z - v2->z) / dist);
-	while ((int) v_distance(&point, v2) > 1)
+	point.x = arc.v1->x;
+	point.y = arc.v1->y;
+	point.z = arc.v1->z;
+	dist = v_distance(arc.v1, arc.v2);
+	gradient = get_gradient(arc.c1, arc.c2, dist);
+	step.x = -((arc.v1->x - arc.v2->x) / dist);
+	step.y = -((arc.v1->y - arc.v2->y) / dist);
+	step.z = -((arc.v1->z - arc.v2->z) / dist);
+	while ((int) v_distance(&point, arc.v2) > 1)
 	{
 		point.x += step.x;
 		point.y += step.y;
 		point.z += step.z;
-		c1.r += gradient.r;
-		c1.g += gradient.g;
-		c1.b += gradient.b;
-		draw_point(&point, c1, img);
+		arc.c1.r += gradient.r;
+		arc.c1.g += gradient.g;
+		arc.c1.b += gradient.b;
+		draw_point(&point, arc.c1, img);
 	}
 }
 
@@ -169,7 +167,7 @@ void	scene_draw(t_scene *scene)
 				if (node[1].z > cam->dist && node[0].z > cam->dist)
 				{
 					v_sum(&node[1], &obj->origin, 1);
-					connect_vertices(&node[1], &node[0], obj->grid->c[i - 1][j], obj->grid->c[i][j], obj->img);
+					connect_vertices((t_arc){&node[1], &node[0], obj->grid->c[i - 1][j], obj->grid->c[i][j]}, obj->img);
 				}
 			}
 			if (j > 0)
@@ -181,7 +179,7 @@ void	scene_draw(t_scene *scene)
 				if (node[1].z > cam->dist && node[0].z > cam->dist)
 				{
 					v_sum(&node[1], &obj->origin, 1);
-					connect_vertices(&node[1], &node[0], obj->grid->c[i][j - 1], obj->grid->c[i][j], obj->img);
+					connect_vertices((t_arc){&node[1], &node[0], obj->grid->c[i][j - 1], obj->grid->c[i][j]}, obj->img);
 				}
 			}
 			j++;

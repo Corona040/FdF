@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/02 20:04:59 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/05 08:47:34 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,21 @@
 # define ROT_FACTOR .01
 # define ZOOM FOV/5
 
+
 typedef struct s_rgb
 {
 	unsigned char	r;
 	unsigned char	g;
 	unsigned char	b;
 }	t_rgb;
+
+typedef struct s_arc
+{
+	t_vector	*v1;
+	t_vector	*v2;
+	t_rgb		c1;
+	t_rgb		c2;
+}	t_arc;
 
 typedef struct s_grid
 {
@@ -133,7 +142,7 @@ int			ctoi(t_rgb rgb);
 // draw.c
 void		draw_point(t_vector *p, t_rgb color, t_img *img);
 int			get_color_from_warp(float_t z_warp);
-void		connect_vertices(t_vector *v1, t_vector *v2, t_rgb c1, t_rgb c2, t_img *img);
+void		connect_vertices(t_arc arc, t_img *img);
 t_vector	**create_gridv(int width, int height, float_t step);
 t_rgb		**create_gridc(int width, int height);
 t_rgb		get_gradient(t_rgb c1, t_rgb c2, float_t dist);
