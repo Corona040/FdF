@@ -33,21 +33,33 @@ FTFLAGS = -I$(LIBFT) -L$(LIBFT) -lft
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)/libft.a
+$(NAME): $(LIBMLX)/libmlx.a $(OBJS) $(LIBFT)/libft.a
 	$(CC) $(CFLAGS) $(OBJS) $(MLXFLAGS) $(FTFLAGS) -lm -o $@
 
 $(LIBFT)/libft.a:
 	@make -C libft complete
+
+$(LIBMLX):
+	@wget https://cdn.intra.42.fr/document/document/21328/minilibx-linux.tgz
+	@tar -xpf minilibx-linux.tgz
+	@rm minilibx-linux.tgz
+
+$(LIBMLX)/libmlx.a: $(LIBMLX)
+	@make -C minilibx-linux
 
 %.o: %.c
 	$(CC) $(CFLAGS) -I$(LIBFT) -c $<
 
 clean:
 	rm -rf $(OBJS)
-	make -C libft clean
+	make -C $(LIBFT) clean
+	make -C $(LIBMLX) clean
 
 fclean: clean
 	rm -rf $(NAME) $(LIBFT)/libft.a
+
+del: fclean
+	rm -rf $(LIBMLX)
 
 re: fclean all
 
