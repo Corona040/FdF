@@ -10,6 +10,7 @@ SRCS =	fdf.c					\
 		draw_utils.c			\
 		shift_n_rotate.c		\
 		hooks.c					\
+		check_map.c				\
 		free_.c
 
 laag_SRCS =	laag_basic.c		\
@@ -21,7 +22,7 @@ OBJS = $(SRCS:.c=.o) $(laag_SRCS:.c=.o)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
 
 LIBFT = libft
 

@@ -6,34 +6,16 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 09:08:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/05 10:51:12 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/09 21:46:23 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	file_to_map(t_map *map, int fd)
+void	map_failure(t_map *map)
 {
-	char	**z_val;
-	char	*line;
-
-	map->y = 0;
-	line = get_next_line(fd);
-	while (line)
-	{
-		z_val = ft_split(line, ' ');
-		free(line);
-		if (map_append(map, z_val) == -1)
-		{
-			free_map(map);
-			exit(EXIT_FAILURE);
-		}
-		map->y++;
-		line = get_next_line(fd);
-	}
-	map->x = 0;
-	while (z_val[map->x])
-		map->x++;
+	free_map(map);
+	exit(EXIT_FAILURE);
 }
 
 void	grid_to_map(t_grid *grid, t_map *map)
@@ -78,6 +60,8 @@ int	xatoi(char *hex)
 				result = (result + (*hex - '0')) * 16;
 			else if (*hex >= 'A' && *hex <= 'F')
 				result = (result + (*hex - 'A' + 10)) * 16;
+			else if (*hex >= 'a' && *hex <= 'f')
+				result = (result + (*hex - 'a' + 10)) * 16;
 			else
 				return (0);
 			hex++;

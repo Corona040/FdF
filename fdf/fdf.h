@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/05 16:17:56 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/09 21:46:48 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,13 @@ void		free_obj(t_obj *obj);
 void		free_scene(t_scene *scene);
 void		free_map(t_map *map);
 /* ************************************************************************** */
+// check_map.c
+int			check_zval(char **zval, int *n_nl);
+int			ft_ishex(int c);
+int			ft_ishexflag(char *s);
+int			ft_isint(int c);
+void		skip_comma(int *i, int *after_comma);
+/* ************************************************************************** */
 // fdf.c
 void		init_scene_from_map(t_scene *scene, t_map map);
 void		isometric_ize(t_scene *scene);
@@ -141,9 +148,10 @@ t_img		*init_scene_img(t_win *win);
 t_map		read_map_file(char *path);
 int			map_append(t_map *map, char **z_val);
 t_grid		*get_grid_from_map(t_map map);
+void		file_to_map(t_map *map, int fd);
 /* ************************************************************************** */
 // read_map_utils.c
-void		file_to_map(t_map *map, int fd);
+void		map_failure(t_map *map);
 void		grid_to_map(t_grid *grid, t_map *map);
 int			xatoi(char *hex);
 t_rgb		itoc(int i);

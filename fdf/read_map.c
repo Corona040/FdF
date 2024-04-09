@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 19:49:01 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/05 10:51:13 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/09 21:51:32 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,28 @@ t_grid	*get_grid_from_map(t_map map)
 	grid->xy[1] = map.y;
 	free_map(&map);
 	return (grid);
+}
+
+void	file_to_map(t_map *map, int fd)
+{
+	char	**z_val;
+	char	*line;
+	int		n_nl;
+
+	map->y = 0;
+	line = get_next_line(fd);
+	while (line)
+	{
+		z_val = ft_split(line, ' ');
+		free(line);
+		if (map_append(map, z_val) == -1 || check_zval(z_val, &n_nl) == -1)
+			map_failure(map);
+		map->y++;
+		line = get_next_line(fd);
+	}
+	if (n_nl > 0 && n_nl != map->y)
+		map_failure(map);
+	map->x = 0;
+	while (z_val[map->x])
+		map->x++;
 }
