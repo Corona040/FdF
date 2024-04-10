@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/09 21:46:48 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/10 08:57:22 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ typedef struct s_scene
 void		free_matrix(void **m, int n);
 void		free_obj(t_obj *obj);
 void		free_scene(t_scene *scene);
-void		free_map(t_map *map);
+void		free_map(t_map *map, int one_more);
 /* ************************************************************************** */
 // check_map.c
 int			check_zval(char **zval, int *n_nl);
@@ -151,7 +151,7 @@ t_grid		*get_grid_from_map(t_map map);
 void		file_to_map(t_map *map, int fd);
 /* ************************************************************************** */
 // read_map_utils.c
-void		map_failure(t_map *map);
+void		map_failure(t_map *map, int one_more);
 void		grid_to_map(t_grid *grid, t_map *map);
 int			xatoi(char *hex);
 t_rgb		itoc(int i);

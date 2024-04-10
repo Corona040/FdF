@@ -6,15 +6,15 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 09:08:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/09 21:46:23 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/10 08:55:56 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	map_failure(t_map *map)
+void	map_failure(t_map *map, int one_more)
 {
-	free_map(map);
+	free_map(map, one_more);
 	exit(EXIT_FAILURE);
 }
 

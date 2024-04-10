@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 16:24:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/03/31 17:52:17 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/10 08:54:51 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	free_scene(t_scene *scene)
 	}
 }
 
-void	free_map(t_map *map)
+void	free_map(t_map *map, int one_more)
 {
 	int	i;
 	int	j;
@@ -61,14 +61,16 @@ void	free_map(t_map *map)
 	i = 0;
 	if (map->vals)
 	{
-		while (i < map->y)
+		while (i < map->y + one_more)
 		{
 			j = 0;
-			while (j < map->x)
+			if (map->vals[i] + j)
 			{
-				if (map->vals[i][j])
+				while (map->vals[i][j])
+				{
 					free(map->vals[i][j]);
-				j++;
+					j++;
+				}
 			}
 			if (map->vals[i])
 				free(map->vals[i]);

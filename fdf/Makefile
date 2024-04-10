@@ -22,7 +22,7 @@ OBJS = $(SRCS:.c=.o) $(laag_SRCS:.c=.o)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 
 LIBFT = libft
 
@@ -64,4 +64,4 @@ del: fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re del
