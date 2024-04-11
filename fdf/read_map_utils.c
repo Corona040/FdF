@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 09:08:47 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/10 08:55:56 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/11 20:27:00 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	grid_to_map(t_grid *grid, t_map *map)
 	while (i < map->y)
 	{
 		j = 0;
-		while (map->vals[i][j])
+		while (j < map->x)
 		{
 			aux = ft_strchr(map->vals[i][j], ',');
 			grid->c[map->x - j - 1][i] = itoc(0xFFFFFF);

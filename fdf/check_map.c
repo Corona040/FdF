@@ -6,13 +6,13 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 20:25:30 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/09 21:47:59 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/11 20:22:37 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	check_zval(char **zval, int *n_nl)
+int	check_zval(char **zval)
 {
 	int	i;
 	int	after_comma;
@@ -21,8 +21,6 @@ int	check_zval(char **zval, int *n_nl)
 	{
 		after_comma = 0;
 		i = 0;
-		if ((*zval)[i] == '\n')
-			(*n_nl)++;
 		while ((*zval)[i])
 		{
 			if (!after_comma && !ft_isint((*zval)[i]) && (*zval)[i] != '\n')

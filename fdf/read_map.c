@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 19:49:01 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/10 08:56:25 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/11 20:29:26 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,22 +81,24 @@ void	file_to_map(t_map *map, int fd)
 {
 	char	**z_val;
 	char	*line;
-	int		n_nl;
+	int		minx;
 
+	minx = 0x7FFFFFFF;
 	map->y = 0;
 	line = get_next_line(fd);
 	while (line)
 	{
 		z_val = ft_split(line, ' ');
 		free(line);
-		if (map_append(map, z_val) == -1 || check_zval(z_val, &n_nl) == -1)
+		if (map_append(map, z_val) == -1 || check_zval(z_val) == -1)
 			map_failure(map, 1);
 		line = get_next_line(fd);
 		map->y++;
+		map->x = 0;
+		while (z_val[map->x])
+			map->x++;
+		if (map->x < minx)
+			minx = map->x;
 	}
-	map->x = 0;
-	while (z_val[map->x])
-		map->x++;
-	if (n_nl > 0 && n_nl != map->y)
-		map_failure(map, 0);
+	map->x = minx;
 }

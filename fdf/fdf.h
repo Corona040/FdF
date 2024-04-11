@@ -6,7 +6,7 @@
 /*   By: ecorona- <ecorona-@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:50:14 by ecorona-          #+#    #+#             */
-/*   Updated: 2024/04/10 08:57:22 by ecorona-         ###   ########.fr       */
+/*   Updated: 2024/04/11 20:23:00 by ecorona-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void		free_scene(t_scene *scene);
 void		free_map(t_map *map, int one_more);
 /* ************************************************************************** */
 // check_map.c
-int			check_zval(char **zval, int *n_nl);
+int			check_zval(char **zval);
 int			ft_ishex(int c);
 int			ft_ishexflag(char *s);
 int			ft_isint(int c);

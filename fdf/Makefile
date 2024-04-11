@@ -22,7 +22,7 @@ OBJS = $(SRCS:.c=.o) $(laag_SRCS:.c=.o)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 LIBFT = libft
 
