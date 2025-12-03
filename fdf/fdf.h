@@ -17,9 +17,9 @@
 # include <math.h>
 # include "X11/X.h"
 # include "minilibx-linux/mlx.h"
-# include "libft/libft.h"
-# include "libft/ft_printf.h"
-# include "libft/get_next_line.h"
+# include "libft/libft/libft.h"
+# include "libft/libft/ft_printf.h"
+# include "libft/libft/get_next_line.h"
 # include "laag.h"
 
 # define XK_ESCAPE 0xff1b

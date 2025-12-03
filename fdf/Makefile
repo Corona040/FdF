@@ -24,7 +24,7 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror -g
 
-LIBFT = libft
+LIBFT = libft/libft
 
 LIBMLX = minilibx-linux
 

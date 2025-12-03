@@ -64,14 +64,11 @@ void	free_map(t_map *map, int one_more)
 		while (i < map->y + one_more)
 		{
 			j = 0;
-			if (map->vals[i] + j)
-			{
-				while (map->vals[i][j])
-				{
-					free(map->vals[i][j]);
-					j++;
-				}
-			}
+      while (map->vals[i][j])
+      {
+        free(map->vals[i][j]);
+        j++;
+      }
 			if (map->vals[i])
 				free(map->vals[i]);
 			i++;
